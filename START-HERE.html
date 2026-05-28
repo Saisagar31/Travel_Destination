@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voyager - Authentication System Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 48px;
+            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #6c757d;
+            margin-bottom: 32px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a2332;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .link-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .link-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .link-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .link-button .icon {
+            font-size: 24px;
+        }
+
+        .link-button .arrow {
+            font-size: 20px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #1a2332;
+        }
+
+        .info-box p {
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .steps li {
+            counter-increment: step-counter;
+            padding: 12px 0;
+            padding-left: 40px;
+            position: relative;
+            color: #1a2332;
+        }
+
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .code {
+            background: #1a2332;
+            color: #4ecdc4;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #4ecdc4;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 2px solid #e9ecef;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Voyager Authentication System</h1>
+        <p class="subtitle">
+            <span class="badge">NEW</span>
+            Session-based authentication with email OTP verification is now live!
+        </p>
+
+        <div class="section">
+            <div class="section-title">
+                <span>🚀</span>
+                <span>Quick Start - Choose Your Path:</span>
+            </div>
+            <div class="link-grid">
+                <a href="test-auth.html" class="link-button">
+                    <div>
+                        <div class="icon">📖</div>
+                        <div>Complete Demo & Documentation</div>
+                    </div>
+                    <div class="arrow">→</div>
+                </a>
+                <a href="login.html" class="link-button">
+                    <div>
+                        <div class="icon">🔑</div>
+                        <div>Go Directly to Login Page</div>
+                    </div>
+                    <div class="arrow">→</div>
+                </a>
+                <a href="landing.html" class="link-button">
+                    <div>
+                        <div class="icon">🌍</div>
+                        <div>Start from Landing Page</div>
+                    </div>
+                    <div class="arrow">→</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span>📋</span>
+                <span>How to Test:</span>
+            </div>
+            <ol class="steps">
+                <li>Click "Go Directly to Login Page" above</li>
+                <li>Enter any valid email address (e.g., <span class="code">test@example.com</span>)</li>
+                <li>Open browser console (<span class="code">F12</span>) to see the generated OTP</li>
+                <li>Look for: <span class="code">🔑 Generated OTP: 123456</span></li>
+                <li>Enter the 6-digit OTP on the verification screen</li>
+                <li>Success! You'll be redirected to the destinations page</li>
+                <li>Click your avatar (top-right) to see user menu and logout option</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span>✨</span>
+                <span>Features Implemented:</span>
+            </div>
+            <div class="info-box">
+                <strong>✅ All Challenge Requirements Met:</strong>
+                <p>✓ Session-based login flow with beautiful UI</p>
+                <p>✓ User email input with validation</p>
+                <p>✓ 6-digit OTP generation (5-minute expiry)</p>
+                <p>✓ OTP verification with auto-advance inputs</p>
+                <p>✓ Session creation on success (24-hour validity)</p>
+                <p>✓ Session manager across all pages</p>
+                <p>✓ User menu in navbar with logout</p>
+                <p>✓ Resend OTP with cooldown timer</p>
+                <p>✓ Fully responsive design</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span>📁</span>
+                <span>Files Created:</span>
+            </div>
+            <div class="info-box">
+                <p><span class="code">login.html</span> - Login & OTP verification page</p>
+                <p><span class="code">auth.js</span> - Authentication logic</p>
+                <p><span class="code">auth-styles.css</span> - Authentication styling</p>
+                <p><span class="code">session-manager.js</span> - Session management</p>
+                <p><span class="code">test-auth.html</span> - Complete demo & documentation</p>
+                <p><span class="code">AUTH-README.md</span> - Technical documentation</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span>⚠️</span>
+                <span>Important Note:</span>
+            </div>
+            <div class="info-box" style="border-left-color: #ff6b6b;">
+                <strong>Demo Implementation:</strong>
+                <p>This is a frontend demo. The OTP is displayed in the browser console. In production, you would:</p>
+                <p>• Generate OTP on the backend</p>
+                <p>• Send OTP via email service (SendGrid, AWS SES, etc.)</p>
+                <p>• Use secure httpOnly cookies instead of localStorage</p>
+                <p>• Implement rate limiting and CAPTCHA</p>
+                <p>• Store sessions in Redis or a database</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <strong>Brownie Challenge-1</strong><br>
+            Session-Based Authentication + Email OTP Verification<br>
+            Implemented for Voyager Travel Website
+        </div>
+    </div>
+
+    <script>
+        console.log('%c🔐 Voyager Authentication System', 'color: #667eea; font-size: 20px; font-weight: bold;');
+        console.log('%cReady to test! Follow the steps on this page.', 'color: #6c757d; font-size: 14px;');
+    </script>
+</body>
+</html>

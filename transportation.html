@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transportation - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="pages-styles.css">
+    <style>
+        /* Transportation Tabs */
+        .transport-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: -80px auto 3rem;
+            max-width: 800px;
+            position: relative;
+            z-index: 10;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 50px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .transport-tab {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .transport-tab:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--text-primary);
+        }
+
+        .transport-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .tab-icon {
+            font-size: 1.3rem;
+        }
+
+        /* Content Sections */
+        .transport-content {
+            display: none;
+        }
+
+        .transport-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Search Card Styles */
+        .search-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            padding: 3rem;
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .search-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Results Grid */
+        .results-section {
+            padding: 2rem 0;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .result-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .result-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        .result-route {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .result-arrow {
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            margin: 0 0.5rem;
+        }
+
+        .result-details {
+            display: grid;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .result-features {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-badge {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .result-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .price-amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+        }
+
+        .book-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="transportation.html" class="active">Transportation</a></li>
+                <li><a href="trip-planner.html">Trip Planner</a></li>
+                <li><a href="ar-experience.html">AR Experience</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </button>
+                </li>
+                <li id="nav-auth-btn"><a href="http://localhost:3000/login-appwrite.html" class="nav-btn">Login / Sign Up</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Travel Your Way</p>
+            <h1 class="hero-title">Transportation</h1>
+            <p class="hero-description">Flights, Buses, and Cabs - All in one place</p>
+        </div>
+    </section>
+
+    <!-- Transportation Tabs -->
+    <div class="container">
+        <div class="transport-tabs">
+            <button class="transport-tab active" onclick="switchTransport('flights')">
+                <span class="tab-icon">✈️</span>
+                <span>Flights</span>
+            </button>
+            <button class="transport-tab" onclick="switchTransport('buses')">
+                <span class="tab-icon">🚌</span>
+                <span>Buses</span>
+            </button>
+            <button class="transport-tab" onclick="switchTransport('cabs')">
+                <span class="tab-icon">🚕</span>
+                <span>Cabs</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- FLIGHTS CONTENT -->
+    <div id="flights-content" class="transport-content active">
+        <div class="container">
+            <div class="search-card">
+                <h2 class="search-title">✈️ Search Flights</h2>
+                <form class="search-form" onsubmit="searchFlights(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">From</label>
+                            <input type="text" class="form-input" placeholder="Departure City" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">To</label>
+                            <input type="text" class="form-input" placeholder="Destination City" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Departure Date</label>
+                            <input type="date" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Return Date</label>
+                            <input type="date" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Passengers</label>
+                            <select class="form-input" required>
+                                <option value="1">1 Passenger</option>
+                                <option value="2">2 Passengers</option>
+                                <option value="3">3 Passengers</option>
+                                <option value="4">4+ Passengers</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="search-btn">🔍 Search Flights</button>
+                </form>
+            </div>
+
+            <div class="results-section">
+                <div class="section-header">
+                    <p class="section-subtitle">Featured Deals</p>
+                    <h2 class="section-title">Popular Flight Routes</h2>
+                </div>
+                <div class="results-grid" id="flights-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUSES CONTENT -->
+    <div id="buses-content" class="transport-content">
+        <div class="container">
+            <div class="search-card">
+                <h2 class="search-title">🚌 Search Buses</h2>
+                <form class="search-form" onsubmit="searchBuses(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">From</label>
+                            <input type="text" class="form-input" placeholder="Departure City" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">To</label>
+                            <input type="text" class="form-input" placeholder="Destination City" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-input" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="search-btn">🔍 Search Buses</button>
+                </form>
+            </div>
+
+            <div class="results-section">
+                <div class="section-header">
+                    <p class="section-subtitle">Popular Routes</p>
+                    <h2 class="section-title">Featured Bus Routes</h2>
+                </div>
+                <div class="results-grid" id="buses-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CABS CONTENT -->
+    <div id="cabs-content" class="transport-content">
+        <div class="container">
+            <div class="search-card">
+                <h2 class="search-title">🚕 Book a Cab</h2>
+                <form class="search-form" onsubmit="searchCabs(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Pickup Location</label>
+                            <input type="text" class="form-input" placeholder="Enter pickup address" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Drop Location</label>
+                            <input type="text" class="form-input" placeholder="Enter destination" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Pickup Date & Time</label>
+                            <input type="datetime-local" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cab Type</label>
+                            <select class="form-input" required>
+                                <option value="economy">Economy</option>
+                                <option value="sedan">Sedan</option>
+                                <option value="suv">SUV</option>
+                                <option value="luxury">Luxury</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="search-btn">🔍 Find Cabs</button>
+                </form>
+            </div>
+
+            <div class="results-section">
+                <div class="section-header">
+                    <p class="section-subtitle">Available Options</p>
+                    <h2 class="section-title">Cab Services</h2>
+                </div>
+                <div class="results-grid" id="cabs-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <span>VOYAGER</span>
+                </div>
+                <p class="footer-text">© 2025 Voyager. Crafting extraordinary travel experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@16.0.2"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+    <script src="transportation-data.js"></script>
+    
+    <!-- Chaos Mode Script -->
+    <script src="chaos-mode.js"></script>
+</body>
+</html>

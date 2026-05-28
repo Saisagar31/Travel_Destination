@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Chaos Mode Demo - Voyager Travel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-section {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .feature-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .filter-tab {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+
+        .destination-card {
+            background: linear-gradient(45deg, #00BCD4, #2196F3);
+            height: 250px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .plane-icon {
+            display: inline-block;
+            font-size: 3rem;
+            margin: 20px;
+        }
+
+        .instructions {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .instructions h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            color: #856404;
+            line-height: 1.8;
+        }
+
+        .nav-logo {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="nav-logo">✈️ VOYAGER</div>
+            <h1 class="hero-title">Extraordinary Journeys Await</h1>
+            <p class="hero-subtitle">Discover the world's most amazing destinations with chaos!</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#destinations">Destinations</a>
+            <a href="#flights">Flights</a>
+            <a href="#about">About</a>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>🎉 How to Use Chaos Mode:</h3>
+            <ul>
+                <li><strong>Left-click the "CHAOS MODE" button</strong> in the bottom-left corner to activate!</li>
+                <li><strong>Right-click the button</strong> to open the secret control menu with chaos level settings</li>
+                <li><strong>Try the Konami Code:</strong> Press ↑ ↑ ↓ ↓ ← → ← → B A for maximum chaos!</li>
+                <li><strong>Console Commands:</strong> Open DevTools (F12) and type <code>chaosMode.activateMaximum()</code></li>
+                <li>Watch as the page transforms with crazy animations and effects</li>
+                <li>Try hovering over buttons - they'll run away from your cursor!</li>
+                <li>See the navigation links dancing around</li>
+                <li>Experience the color-shifting techno-color effect</li>
+                <li>Watch input fields shake with turbulence when you click them</li>
+                <li>Enjoy the confetti explosion on activation! 🎊</li>
+                <li>Click the button again to restore normalcy</li>
+            </ul>
+        </div>
+
+        <!-- Features Section -->
+        <div class="demo-section">
+            <h2>🎨 Chaos Mode Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌈</div>
+                    <div class="feature-title">Techno-Color Shift</div>
+                    <div class="feature-description">Watch the entire page cycle through rainbow colors!</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-title">Spinning Madness</div>
+                    <div class="feature-description">Logos and elements spin endlessly</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎭</div>
+                    <div class="feature-title">Comic Sans Invasion</div>
+                    <div class="feature-description">Everything turns into Comic Sans!</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎪</div>
+                    <div class="feature-title">Drunken Navigation</div>
+                    <div class="feature-description">Nav links float and drift randomly</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎈</div>
+                    <div class="feature-title">Anti-Gravity Text</div>
+                    <div class="feature-description">Words float up and down like balloons</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏃</div>
+                    <div class="feature-title">Runaway Buttons</div>
+                    <div class="feature-description">Try to click them - they'll dodge you!</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎊</div>
+                    <div class="feature-title">Confetti Explosion</div>
+                    <div class="feature-description">Colorful confetti celebrates chaos!</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎚️</div>
+                    <div class="feature-title">Chaos Levels</div>
+                    <div class="feature-description">Mild, Medium, Extreme, or Maximum!</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <div class="feature-title">Konami Code</div>
+                    <div class="feature-description">Secret code unlocks max chaos!</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <div class="feature-title">Secret Menu</div>
+                    <div class="feature-description">Right-click for chaos controls!</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <div class="feature-title">Matrix Rain</div>
+                    <div class="feature-description">Maximum chaos includes Matrix effect!</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📟</div>
+                    <div class="feature-title">Console Commands</div>
+                    <div class="feature-description">Control chaos via DevTools!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Elements Section -->
+        <div class="demo-section">
+            <h2>🎮 Interactive Elements</h2>
+            
+            <h3 style="margin: 20px 0;">Filter Pills (Watch them bounce!)</h3>
+            <div class="filter-tabs">
+                <button class="filter-tab">🏖️ Beach</button>
+                <button class="filter-tab">🏔️ Adventure</button>
+                <button class="filter-tab">🌳 Nature</button>
+                <button class="filter-tab">🏙️ City</button>
+                <button class="filter-tab">❄️ Winter</button>
+            </div>
+
+            <h3 style="margin: 30px 0 20px 0;">Flying Planes (Watch them loop!)</h3>
+            <div style="text-align: center;">
+                <span class="plane-icon">✈️</span>
+                <span class="plane-icon">🛫</span>
+                <span class="plane-icon">🛬</span>
+            </div>
+
+            <h3 style="margin: 30px 0 20px 0;">Runaway Buttons (Try to click them!)</h3>
+            <div style="text-align: center;">
+                <button class="cta-button">Book Now!</button>
+                <button class="cta-button">Search Flights</button>
+                <button class="cta-button">Explore More</button>
+            </div>
+
+            <h3 style="margin: 30px 0 20px 0;">Turbulent Inputs (Click and type!)</h3>
+            <input type="text" placeholder="Departure City (Watch it shake!)">
+            <input type="text" placeholder="Destination City (Feel the turbulence!)">
+            <select>
+                <option>Select Travel Date</option>
+                <option>Next Week</option>
+                <option>Next Month</option>
+            </select>
+        </div>
+
+        <!-- Destination Cards Section -->
+        <div class="demo-section">
+            <h2>🗺️ Destination Cards</h2>
+            <p style="margin-bottom: 20px; color: #666;">These cards will shuffle and dance in chaos mode!</p>
+            <div class="feature-grid">
+                <div class="destination-card">🇬🇷 Santorini</div>
+                <div class="destination-card">🇮🇩 Bali</div>
+                <div class="destination-card">🇮🇸 Iceland</div>
+                <div class="destination-card">🇯🇵 Tokyo</div>
+                <div class="destination-card">🇲🇻 Maldives</div>
+                <div class="destination-card">🇵🇪 Machu Picchu</div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="demo-section" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 style="color: white;">Ready for Chaos? 🎉</h2>
+            <p style="font-size: 1.2rem; margin: 20px 0;">Click the CHAOS MODE button in the top-right corner!</p>
+            <p style="opacity: 0.9;">Press it again to restore order 😌</p>
+        </div>
+    </div>
+
+    <!-- Chaos Mode Script -->
+    <script src="chaos-mode.js"></script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Loading Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+        }
+        h1 { color: #333; }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .image-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+        .image-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        .image-info {
+            padding: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        .error {
+            color: red;
+            padding: 10px;
+            background: #fee;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .success {
+            color: green;
+            padding: 10px;
+            background: #efe;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .log {
+            background: #333;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Image Loading Debug Tool</h1>
+        
+        <div class="test-section">
+            <h2>Step 1: Test Backend API</h2>
+            <button onclick="testBackendHealth()">Test Backend Health</button>
+            <button onclick="testAPIDirectly()">Test API Endpoint</button>
+            <div id="backend-result" class="results"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Step 2: Fetch Images via Proxy</h2>
+            <button onclick="fetchImagesViaProxy()">Fetch Paris Images</button>
+            <button onclick="fetchImagesViaProxy('santorini')">Fetch Santorini Images</button>
+            <button onclick="fetchImagesViaProxy('bali')">Fetch Bali Images</button>
+            <div id="proxy-result" class="results"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Step 3: Display Images</h2>
+            <div id="image-grid" class="image-grid"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Console Log</h2>
+            <div id="console-log" class="log"></div>
+        </div>
+    </div>
+
+    <script src="api-services-proxy.js"></script>
+    <script>
+        const logContainer = document.getElementById('console-log');
+
+        function log(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const timestamp = new Date().toLocaleTimeString();
+            const icon = type === 'error' ? '❌' : type === 'success' ? '✅' : '📝';
+            entry.textContent = `[${timestamp}] ${icon} ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(message);
+        }
+
+        async function testBackendHealth() {
+            const resultDiv = document.getElementById('backend-result');
+            resultDiv.innerHTML = '<p>Testing backend...</p>';
+            log('Testing backend health...');
+
+            try {
+                const response = await fetch('http://localhost:3001/api/health');
+                const data = await response.json();
+                
+                log(`Backend health check: ${data.status}`, 'success');
+                log(`APIs configured: OpenTripMap=${data.apis.opentripmap}, Pexels=${data.apis.pexels}`, 'success');
+                
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        <strong>✅ Backend is running!</strong><br>
+                        Status: ${data.status}<br>
+                        Pexels API: ${data.apis.pexels ? '✓' : '✗'}<br>
+                        OpenTripMap API: ${data.apis.opentripmap ? '✓' : '✗'}
+                    </div>
+                `;
+            } catch (error) {
+                log(`Backend health check failed: ${error.message}`, 'error');
+                resultDiv.innerHTML = `<div class="error">❌ Backend not responding: ${error.message}</div>`;
+            }
+        }
+
+        async function testAPIDirectly() {
+            const resultDiv = document.getElementById('backend-result');
+            resultDiv.innerHTML = '<p>Testing API endpoint directly...</p>';
+            log('Testing /api/images endpoint...');
+
+            try {
+                const response = await fetch('http://localhost:3001/api/images?q=paris&per_page=3');
+                const data = await response.json();
+                
+                log(`API returned ${data.photos ? data.photos.length : 0} photos`, 'success');
+                
+                if (data.photos && data.photos.length > 0) {
+                    log(`First photo: ID=${data.photos[0].id}, Photographer=${data.photos[0].photographer}`, 'success');
+                    log(`Image URL: ${data.photos[0].src.large}`, 'success');
+                    
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <strong>✅ API endpoint working!</strong><br>
+                            Photos returned: ${data.photos.length}<br>
+                            First photo by: ${data.photos[0].photographer}<br>
+                            Image URL: <a href="${data.photos[0].src.large}" target="_blank">View</a>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ No photos returned</div>`;
+                }
+            } catch (error) {
+                log(`API test failed: ${error.message}`, 'error');
+                resultDiv.innerHTML = `<div class="error">❌ API error: ${error.message}</div>`;
+            }
+        }
+
+        async function fetchImagesViaProxy(destination = 'paris') {
+            const proxyResultDiv = document.getElementById('proxy-result');
+            const imageGrid = document.getElementById('image-grid');
+            
+            proxyResultDiv.innerHTML = `<p>Fetching ${destination} images via proxy...</p>`;
+            imageGrid.innerHTML = '';
+            
+            log(`Fetching images for: ${destination}`);
+
+            try {
+                // Use the proxy service
+                const images = await APIServicesProxy.getPexelsImages(destination, 6);
+                
+                log(`Received ${images.length} images from proxy`, images.length > 0 ? 'success' : 'error');
+                
+                if (images.length === 0) {
+                    proxyResultDiv.innerHTML = `<div class="error">❌ No images returned from proxy</div>`;
+                    log('Proxy returned empty array', 'error');
+                    return;
+                }
+
+                proxyResultDiv.innerHTML = `<div class="success">✅ Successfully fetched ${images.length} images!</div>`;
+
+                // Display images
+                imageGrid.innerHTML = images.map((img, index) => {
+                    log(`Image ${index + 1}: ${img.url}`, 'success');
+                    return `
+                        <div class="image-item">
+                            <img src="${img.url}" 
+                                 alt="${img.alt}" 
+                                 loading="lazy"
+                                 onerror="handleImageError(this, ${index})"
+                                 onload="handleImageLoad(this, ${index})">
+                            <div class="image-info">
+                                <strong>📸 ${img.photographer}</strong><br>
+                                ID: ${img.id}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                log(`Fetch failed: ${error.message}`, 'error');
+                proxyResultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function handleImageError(img, index) {
+            log(`Image ${index + 1} failed to load: ${img.src}`, 'error');
+            img.style.background = '#fee';
+            img.alt = 'Failed to load';
+        }
+
+        function handleImageLoad(img, index) {
+            log(`Image ${index + 1} loaded successfully`, 'success');
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            log('Page loaded. Click buttons to test image loading.', 'success');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+auth.js:464 🔐 Authentication System Ready
+script.js:332 ✈️ VOYAGER - Luxury Travel Experiences
+auth.js:18 🔐 Authentication system initialized
+script.js:148 🌍 Voyager Travel Website Loaded
+trip-planner.html:728 ✅ Trip Planner Ready!
+trip-planner.html:491 🔍 Searching for: senso ji temple
+trip-planner.html:502 📸 Fetching photos...
+trip-planner.html:561 Fetching photos for: senso ji temple
+trip-planner.html:570 Photos API response: Object
+trip-planner.html:513 📸 Photos received: 9
+trip-planner.html:515 🏛️ Fetching attractions...
+trip-planner.html:603 Fetching attractions for: senso ji temple
+trip-planner.html:613 Geocode response: Array(1)
+trip-planner.html:621 Coordinates: 35.7134032 139.7955265
+trip-planner.html:631 Places response: Object
+trip-planner.html:650 Generating sample attractions for: senso ji temple
+trip-planner.html:526 🏛️ Attractions received: 6
+trip-planner.html:537 ✅ Search completed successfully!
+trip-planner.html:491 🔍 Searching for: Tokyo
+trip-planner.html:502 📸 Fetching photos...
+trip-planner.html:561 Fetching photos for: Tokyo
+trip-planner.html:570 Photos API response: {total_results: 6691, page: 1, per_page: '9', photos: Array(9)}
+trip-planner.html:513 📸 Photos received: 9
+trip-planner.html:515 🏛️ Fetching attractions...
+trip-planner.html:603 Fetching attractions for: Tokyo
+trip-planner.html:613 Geocode response: [{…}]
+trip-planner.html:621 Coordinates: 35.6768601 139.7638947
+trip-planner.html:631 Places response: {}
+trip-planner.html:650 Generating sample attractions for: Tokyo
+trip-planner.html:526 🏛️ Attractions received: 6
+trip-planner.html:537 ✅ Search completed successfully!

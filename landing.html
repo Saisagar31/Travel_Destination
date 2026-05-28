@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voyager - Begin Your Journey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="landing-styles.css">
+    
+    <!-- Rive Canvas Library -->
+    <script src="https://unpkg.com/@rive-app/canvas@2.17.3"></script>
+</head>
+<body>
+    
+    <!-- Rive Animation Container - Add your animation code here -->
+    <div class="rive-background">
+        <canvas id="rive-canvas"></canvas>
+        <div class="rive-overlay"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="landing-container">
+        
+        <!-- Logo & Auth Buttons -->
+        <div class="landing-header">
+            <div class="landing-logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <div class="auth-buttons" id="auth-buttons">
+                <a href="http://localhost:3000/login-appwrite.html" class="btn-login">Login / Sign Up</a>
+            </div>
+            <div class="user-menu hidden" id="user-menu">
+                <button class="user-profile-btn" onclick="toggleUserDropdown()">
+                    <span class="user-avatar" id="user-avatar">👤</span>
+                    <span class="user-name" id="user-name">User</span>
+                </button>
+                <div class="user-dropdown hidden" id="user-dropdown">
+                    <a href="http://localhost:3000/profile.html" class="dropdown-item">
+                        <span>👤</span> My Profile
+                    </a>
+                    <a href="#" class="dropdown-item" onclick="logout(event)">
+                        <span>🚪</span> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="title-word">Discover</span>
+                <span class="title-word">The</span>
+                <span class="title-word">Extraordinary</span>
+            </h1>
+            <p class="hero-tagline">
+                Embark on a journey to the world's most breathtaking destinations
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div class="cta-buttons">
+                <a href="index.html" class="btn-primary">
+                    <span class="btn-text">Get Started</span>
+                    <span class="btn-icon">→</span>
+                </a>
+                <button class="btn-secondary" onclick="scrollToFeatures()">
+                    <span class="btn-text">Learn More</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Features Preview -->
+        <div class="features-preview" id="features">
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3 class="feature-title">6 Destinations</h3>
+                <p class="feature-description">Handpicked locations across the globe</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🗺️</div>
+                <h3 class="feature-title">Secret Spots</h3>
+                <p class="feature-description">Hidden gems at every destination</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3 class="feature-title">Unique Experiences</h3>
+                <p class="feature-description">Unforgettable adventures await</p>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <span class="scroll-text">Scroll to explore</span>
+            <div class="scroll-arrow">↓</div>
+        </div>
+
+    </div>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number" data-count="6">0</div>
+                <div class="stat-label">Destinations</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="24">0</div>
+                <div class="stat-label">Secret Spots</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="100">0</div>
+                <div class="stat-label">+ Experiences</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Teaser -->
+    <section class="destinations-teaser">
+        <div class="teaser-container">
+            <p class="teaser-subtitle">Featured Destinations</p>
+            <h2 class="teaser-title">Where Will You Go?</h2>
+            
+            <div class="destinations-preview-grid">
+                <div class="preview-card" style="--delay: 0.1s">
+                    <img src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=400&h=300&fit=crop" alt="Santorini">
+                    <div class="preview-overlay">
+                        <h3>Santorini</h3>
+                        <p>Greece</p>
+                    </div>
+                </div>
+                
+                <div class="preview-card" style="--delay: 0.2s">
+                    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&h=300&fit=crop" alt="Bali">
+                    <div class="preview-overlay">
+                        <h3>Bali</h3>
+                        <p>Indonesia</p>
+                    </div>
+                </div>
+                
+                <div class="preview-card" style="--delay: 0.3s">
+                    <img src="https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=400&h=300&fit=crop" alt="Iceland">
+                    <div class="preview-overlay">
+                        <h3>Iceland</h3>
+                        <p>Nordic Europe</p>
+                    </div>
+                </div>
+                
+                <div class="preview-card" style="--delay: 0.4s">
+                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&h=300&fit=crop" alt="Tokyo">
+                    <div class="preview-overlay">
+                        <h3>Tokyo</h3>
+                        <p>Japan</p>
+                    </div>
+                </div>
+                
+                <div class="preview-card" style="--delay: 0.5s">
+                    <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400&h=300&fit=crop" alt="Maldives">
+                    <div class="preview-overlay">
+                        <h3>Maldives</h3>
+                        <p>Indian Ocean</p>
+                    </div>
+                </div>
+                
+                <div class="preview-card" style="--delay: 0.6s">
+                    <img src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=400&h=300&fit=crop" alt="Machu Picchu">
+                    <div class="preview-overlay">
+                        <h3>Machu Picchu</h3>
+                        <p>Peru</p>
+                    </div>
+                </div>
+            </div>
+
+            <a href="login.html" class="view-all-btn">
+                <span>View All Destinations</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <footer class="footer-cta">
+        <div class="footer-content">
+            <h2 class="footer-title">Ready to Begin Your Journey?</h2>
+            <p class="footer-text">Discover extraordinary destinations and create unforgettable memories</p>
+            <a href="login.html" class="footer-btn">
+                <span>Start Exploring</span>
+                <span class="btn-glow"></span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="landing-script.js"></script>
+    
+    <!-- RIVE ANIMATION -->
+    <script>
+        const r = new rive.Rive({
+            src: "7322-14068-traveller-interactive-animation.riv",
+            canvas: document.getElementById("rive-canvas"),
+            autoplay: true,
+            stateMachines: "State Machine 1",
+            fit: rive.Fit.Cover,
+            alignment: rive.Alignment.Center,
+            onLoad: () => {
+                r.resizeDrawingSurfaceToCanvas();
+                // Scale up the canvas to fill better
+                const canvas = document.getElementById("rive-canvas");
+                canvas.style.transform = "scale(1.5)";
+                console.log('✅ Rive animation loaded and playing!');
+            },
+            onLoadError: (err) => {
+                console.error('❌ Error loading Rive:', err);
+            }
+        });
+        
+        // Resize canvas when window resizes
+        window.addEventListener('resize', () => {
+            r.resizeDrawingSurfaceToCanvas();
+        });
+    </script>
+    
+    <!-- Appwrite SDK for Auth State -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@16.0.2"></script>
+    <script>
+        // Initialize Appwrite
+        const client = new Appwrite.Client();
+        client
+            .setEndpoint('https://cloud.appwrite.io/v1')
+            .setProject('693c23c300185b1d3ab6');
+        
+        const account = new Appwrite.Account(client);
+
+        // Check if user is logged in
+        async function checkAuthState() {
+            try {
+                const user = await account.get();
+                // User is logged in
+                document.getElementById('auth-buttons').classList.add('hidden');
+                document.getElementById('user-menu').classList.remove('hidden');
+                
+                // Set user name
+                const userName = user.name || user.email.split('@')[0];
+                document.getElementById('user-name').textContent = userName;
+                
+                // Set avatar (first letter)
+                const firstLetter = user.email.charAt(0).toUpperCase();
+                document.getElementById('user-avatar').textContent = firstLetter;
+            } catch (error) {
+                // User is not logged in
+                document.getElementById('auth-buttons').classList.remove('hidden');
+                document.getElementById('user-menu').classList.add('hidden');
+            }
+        }
+
+        // Toggle user dropdown
+        function toggleUserDropdown(event) {
+            if (event) event.stopPropagation();
+            const dropdown = document.getElementById('user-dropdown');
+            dropdown.classList.toggle('show');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const userMenu = document.getElementById('user-menu');
+            const dropdown = document.getElementById('user-dropdown');
+            if (userMenu && !userMenu.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Logout function
+        async function logout(event) {
+            if (event) event.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                try {
+                    await account.deleteSession('current');
+                    alert('✅ Logged out successfully!\n\nYou are now viewing as a guest.');
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    alert('Error logging out. Please try again.');
+                }
+            }
+        }
+
+        // Check auth state on page load
+        checkAuthState();
+    </script>
+</body>
+</html>

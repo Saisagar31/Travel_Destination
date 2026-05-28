@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Experience - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="pages-styles.css">
+    <style>
+        .page-hero {
+            min-height: 60vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+        }
+
+        .ar-section {
+            padding: 4rem 0;
+        }
+
+        .ar-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .ar-intro h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .ar-intro p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .ar-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+            padding: 0 2rem;
+        }
+
+        .ar-feature-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .ar-feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .ar-experiences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+
+        .ar-experience-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ar-experience-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .ar-card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .ar-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .ar-card-content {
+            padding: 1.5rem;
+        }
+
+        .ar-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .ar-card-location {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .ar-card-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .ar-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .ar-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ar-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .ar-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .ar-btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .ar-btn-secondary:hover {
+            background: var(--bg-glass);
+        }
+
+        .ar-btn-disabled {
+            background: rgba(128, 128, 128, 0.3);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        .ar-badge-coming-soon {
+            background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%);
+        }
+
+        .ar-badge-live {
+            background: linear-gradient(135deg, #00d4ff 0%, #667eea 100%);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+            }
+        }
+
+        .ar-coming-soon {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .ar-available {
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .ar-available:hover {
+            border-color: rgba(102, 126, 234, 0.6);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Featured AR Section */
+        .featured-ar-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-ar-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .featured-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .featured-title {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .featured-description {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* AR Viewer Modal */
+        .ar-viewer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ar-viewer-modal.active {
+            display: flex;
+        }
+
+        .ar-viewer-content {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .ar-viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+
+        .ar-viewer-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .ar-viewer-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .ar-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="transportation.html">Transportation</a></li>
+                <li><a href="trip-planner.html">Trip Planner</a></li>
+                <li><a href="ar-experience.html" class="active">AR Experience</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </button>
+                </li>
+                <li id="nav-auth-btn"><a href="http://localhost:3000/login-appwrite.html" class="nav-btn">Login / Sign Up</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Immersive Technology</p>
+            <h1 class="hero-title">AR Travel Experience</h1>
+            <p class="hero-description">Experience destinations in augmented reality before you travel</p>
+        </div>
+    </section>
+
+    <!-- AR Section -->
+    <section class="ar-section">
+        <div class="container">
+            <!-- Intro -->
+            <div class="ar-intro">
+                <h3>🌐 Step Into Your Next Adventure</h3>
+                <p>
+                    Using cutting-edge augmented reality technology, explore your dream destinations from anywhere. 
+                    Walk through ancient temples, stand on pristine beaches, and experience the world like never before.
+                </p>
+            </div>
+
+            <!-- AR Features -->
+            <div class="ar-features">
+                <div class="ar-feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">Mobile AR</div>
+                    <div class="feature-description">Experience destinations on your smartphone with immersive 360° views</div>
+                </div>
+
+                <div class="ar-feature-card">
+                    <div class="feature-icon">🥽</div>
+                    <div class="feature-title">VR Compatible</div>
+                    <div class="feature-description">Full virtual reality support for even more immersive experiences</div>
+                </div>
+
+                <div class="ar-feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Interactive Tours</div>
+                    <div class="feature-description">Guided virtual tours with local insights and hidden gems</div>
+                </div>
+
+                <div class="ar-feature-card">
+                    <div class="feature-icon">📸</div>
+                    <div class="feature-title">Photo Previews</div>
+                    <div class="feature-description">See yourself at destinations with AR photo placement</div>
+                </div>
+            </div>
+
+            <!-- Featured AR - Tokyo -->
+            <div class="featured-ar-section">
+                <div class="featured-badge">✨ NOW AVAILABLE</div>
+                <h3 class="featured-title">Experience Tokyo & Paris in AR - Live Now!</h3>
+                <p class="featured-description">
+                    Explore Tokyo's neon-lit streets and Paris's romantic boulevards through our revolutionary AR experiences. 
+                    More destinations coming soon!
+                </p>
+            </div>
+
+            <!-- Section Header -->
+            <div class="section-header">
+                <p class="section-subtitle">Virtual Tours</p>
+                <h2 class="section-title">AR Experiences</h2>
+                <p class="section-description">Tokyo and Paris are live! More destinations launching soon.</p>
+            </div>
+
+            <!-- AR Experiences Grid -->
+            <div class="ar-experiences-grid">
+                <!-- Santorini AR -->
+                <div class="ar-experience-card ar-coming-soon">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&h=600&fit=crop" alt="Santorini AR" class="ar-card-image">
+                        <div class="ar-badge ar-badge-coming-soon">🚧 Coming Soon</div>
+                    </div>
+                    <div class="ar-card-content">
+                        <div class="ar-card-title">Santorini Sunset Tour</div>
+                        <div class="ar-card-location">📍 Greece</div>
+                        <div class="ar-card-description">
+                            Experience the iconic white-washed buildings and stunning caldera views in immersive AR
+                        </div>
+                        <div class="ar-actions">
+                            <button class="ar-btn ar-btn-disabled" disabled>Coming Soon</button>
+                            <button class="ar-btn ar-btn-secondary" onclick="notifyMe(event, 'Santorini')">Notify Me</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tokyo AR - AVAILABLE -->
+                <div class="ar-experience-card ar-available" onclick="openARViewer('Tokyo', 'Japan')">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&h=600&fit=crop" alt="Tokyo AR" class="ar-card-image">
+                        <div class="ar-badge ar-badge-live">✨ AR Live</div>
+                    </div>
+                    <div class="ar-card-content">
+                        <div class="ar-card-title">Tokyo Night Lights</div>
+                        <div class="ar-card-location">📍 Japan</div>
+                        <div class="ar-card-description">
+                            Walk through neon-lit streets and experience the energy of Shibuya Crossing
+                        </div>
+                        <div class="ar-actions">
+                            <button class="ar-btn ar-btn-primary" onclick="event.stopPropagation(); openARViewer('Tokyo', 'Japan')">🚀 Launch AR</button>
+                            <button class="ar-btn ar-btn-secondary" onclick="event.stopPropagation(); previewAR('Tokyo')">Preview</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Machu Picchu AR -->
+                <div class="ar-experience-card ar-coming-soon">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=800&h=600&fit=crop" alt="Machu Picchu AR" class="ar-card-image">
+                        <div class="ar-badge ar-badge-coming-soon">🚧 Coming Soon</div>
+                    </div>
+                    <div class="ar-card-content">
+                        <div class="ar-card-title">Ancient Incan Citadel</div>
+                        <div class="ar-card-location">📍 Peru</div>
+                        <div class="ar-card-description">
+                            Explore the mystical ruins and learn about Incan history in an interactive AR tour
+                        </div>
+                        <div class="ar-actions">
+                            <button class="ar-btn ar-btn-disabled" disabled>Coming Soon</button>
+                            <button class="ar-btn ar-btn-secondary" onclick="notifyMe(event, 'Machu Picchu')">Notify Me</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Maldives AR -->
+                <div class="ar-experience-card ar-coming-soon">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&h=600&fit=crop" alt="Maldives AR" class="ar-card-image">
+                        <div class="ar-badge ar-badge-coming-soon">🚧 Coming Soon</div>
+                    </div>
+                    <div class="ar-card-content">
+                        <div class="ar-card-title">Underwater Paradise</div>
+                        <div class="ar-card-location">📍 Maldives</div>
+                        <div class="ar-card-description">
+                            Dive into crystal-clear waters and experience luxury overwater villas
+                        </div>
+                        <div class="ar-actions">
+                            <button class="ar-btn ar-btn-disabled" disabled>Coming Soon</button>
+                            <button class="ar-btn ar-btn-secondary" onclick="notifyMe(event, 'Maldives')">Notify Me</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paris AR - AVAILABLE -->
+                <div class="ar-experience-card ar-available" onclick="openARViewer('Paris', 'France')">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&h=600&fit=crop" alt="Paris AR" class="ar-card-image">
+                        <div class="ar-badge ar-badge-live">✨ AR Live</div>
+                    </div>
+                    <div class="ar-card-content">
+                        <div class="ar-card-title">Parisian Romance</div>
+                        <div class="ar-card-location">📍 France</div>
+                        <div class="ar-card-description">
+                            Experience the City of Light with iconic landmarks and charming boulevards
+                        </div>
+                        <div class="ar-actions">
+                            <button class="ar-btn ar-btn-primary" onclick="event.stopPropagation(); openARViewer('Paris', 'France')">🚀 Launch AR</button>
+                            <button class="ar-btn ar-btn-secondary" onclick="event.stopPropagation(); previewAR('Paris')">Preview</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bali AR -->
+                <div class="ar-experience-card ar-coming-soon">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&h=600&fit=crop" alt="Bali AR" class="ar-card-image">
+                        <div class="ar-badge ar-badge-coming-soon">🚧 Coming Soon</div>
+                    </div>
+                    <div class="ar-card-content">
+                        <div class="ar-card-title">Temple & Rice Terraces</div>
+                        <div class="ar-card-location">📍 Indonesia</div>
+                        <div class="ar-card-description">
+                            Explore sacred temples and stunning rice paddies in this tropical paradise
+                        </div>
+                        <div class="ar-actions">
+                            <button class="ar-btn ar-btn-disabled" disabled>Coming Soon</button>
+                            <button class="ar-btn ar-btn-secondary" onclick="notifyMe(event, 'Bali')">Notify Me</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AR Viewer Modal -->
+    <div class="ar-viewer-modal" id="ar-viewer-modal">
+        <button class="ar-viewer-close" onclick="closeARViewer()">×</button>
+        <div class="ar-viewer-content">
+            <div class="ar-viewer-title" id="ar-title">AR Experience</div>
+            <div class="ar-viewer-description" id="ar-description">
+                Loading augmented reality experience...
+            </div>
+            <div class="ar-placeholder">
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🌐</div>
+                    <div>AR Viewer Placeholder</div>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">
+                        Your AR backend integration will load here
+                    </div>
+                </div>
+            </div>
+            <button class="ar-btn ar-btn-primary" style="width: 100%;" onclick="closeARViewer()">Close AR Experience</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <span>VOYAGER</span>
+                </div>
+                <p class="footer-text">© 2025 Voyager. Crafting extraordinary travel experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        function openARViewer(destination, location) {
+            // Redirect to Ash Twin Project for Tokyo
+            if (destination === 'Tokyo') {
+                window.location.href = 'Ash_Twin_Project/index.html';
+                return;
+            }
+            
+            // Redirect to paris.html for Paris
+            if (destination === 'Paris') {
+                window.location.href = 'Ash_Twin_Project/paris.html';
+                return;
+            }
+            
+            const modal = document.getElementById('ar-viewer-modal');
+            const title = document.getElementById('ar-title');
+            const description = document.getElementById('ar-description');
+            
+            title.textContent = `${destination} AR Experience`;
+            description.textContent = `You are now experiencing ${destination}, ${location} in augmented reality. This is where your AR backend will integrate to provide immersive 3D experiences.`;
+            
+            modal.classList.add('active');
+        }
+
+        function closeARViewer() {
+            document.getElementById('ar-viewer-modal').classList.remove('active');
+        }
+
+        function previewAR(destination) {
+            alert(`📱 ${destination} AR Preview\n\nThis will show a 360° preview of the destination before launching the full AR experience.`);
+        }
+
+        function notifyMe(event, destination) {
+            event.stopPropagation();
+            const email = prompt(`🔔 Get notified when ${destination} AR experience launches!\n\nEnter your email:`);
+            if (email && email.includes('@')) {
+                alert(`✅ Great! We'll notify you at ${email} when ${destination} AR experience is ready!\n\n📧 You'll be the first to know!`);
+            } else if (email) {
+                alert('❌ Please enter a valid email address.');
+            }
+        }
+    </script>
+</body>
+</html>

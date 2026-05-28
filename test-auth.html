@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication System Demo - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1a2332 0%, #2d3e50 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #d4af37, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #b0b8c1;
+        }
+
+        .challenge-info {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .challenge-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 16px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+        }
+
+        .demo-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #d4af37;
+        }
+
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .flow-step {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #d4af37;
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(8px);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .step-description {
+            color: #b0b8c1;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            color: white;
+            padding: 20px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .demo-button.secondary {
+            background: rgba(78, 205, 196, 0.2);
+            border: 2px solid #4ecdc4;
+            color: #4ecdc4;
+        }
+
+        .demo-button.secondary:hover {
+            background: rgba(78, 205, 196, 0.3);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #4ecdc4;
+            margin-top: 16px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 24px;
+            color: #ff6b6b;
+            font-size: 14px;
+        }
+
+        .note strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .tech-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .tech-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .tech-description {
+            font-size: 12px;
+            color: #b0b8c1;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 36px;
+            }
+
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Session-Based Authentication System</h1>
+            <p>Complete implementation of Brownie Challenge-1</p>
+        </div>
+
+        <div class="challenge-info">
+            <div class="challenge-title">✨ Challenge Requirements</div>
+            <ul class="feature-list">
+                <li class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>Session-Based Login Flow</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>User Email Input</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>OTP Generation (6-digit)</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>OTP Verification</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>Session Creation on Success</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <div class="section-title">🚀 Try the Demo</div>
+            <p style="color: #b0b8c1; margin-bottom: 24px;">
+                Click the button below to experience the complete authentication flow
+            </p>
+            <div class="button-grid">
+                <a href="landing.html" class="demo-button">
+                    <span>🌍</span>
+                    <span>Start from Landing Page</span>
+                </a>
+                <a href="login.html" class="demo-button">
+                    <span>🔑</span>
+                    <span>Go Directly to Login</span>
+                </a>
+                <a href="index.html" class="demo-button secondary">
+                    <span>🏠</span>
+                    <span>View Main Page</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <div class="section-title">📋 Authentication Flow</div>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="step-title">
+                        <span class="step-number">1</span>
+                        User Enters Email
+                    </div>
+                    <div class="step-description">
+                        User navigates to login page and enters their email address. Form validates email format before proceeding.
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="step-title">
+                        <span class="step-number">2</span>
+                        OTP Generation
+                    </div>
+                    <div class="step-description">
+                        System generates a random 6-digit OTP with 5-minute expiry. OTP is logged to console (in production, it would be sent via email).
+                    </div>
+                    <div class="code-block">
+                        🔑 Generated OTP: 123456 (Check browser console)
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="step-title">
+                        <span class="step-number">3</span>
+                        OTP Verification
+                    </div>
+                    <div class="step-description">
+                        User enters the 6-digit code. System validates the OTP and checks expiry time. Supports paste functionality and auto-advance between inputs.
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="step-title">
+                        <span class="step-number">4</span>
+                        Session Creation
+                    </div>
+                    <div class="step-description">
+                        On successful verification, a unique session is created with 24-hour validity. Session data is stored in localStorage (use secure cookies in production).
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="step-title">
+                        <span class="step-number">5</span>
+                        Authenticated Access
+                    </div>
+                    <div class="step-description">
+                        User is redirected to the main page. Session manager validates authentication state across all pages. User menu appears in navbar showing logged-in status.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <div class="section-title">🔧 Technical Implementation</div>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <div class="tech-icon">📧</div>
+                    <div class="tech-name">Email Validation</div>
+                    <div class="tech-description">Regex-based validation</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🔐</div>
+                    <div class="tech-name">OTP System</div>
+                    <div class="tech-description">6-digit random generation</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">⏱️</div>
+                    <div class="tech-name">Expiry Management</div>
+                    <div class="tech-description">5-min OTP, 24-hr session</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🔄</div>
+                    <div class="tech-name">Resend Logic</div>
+                    <div class="tech-description">60-second cooldown</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">💾</div>
+                    <div class="tech-name">Session Storage</div>
+                    <div class="tech-description">localStorage (demo)</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🎨</div>
+                    <div class="tech-name">UI/UX</div>
+                    <div class="tech-description">Glassmorphism design</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <div class="section-title">📖 Quick Test Guide</div>
+            <div class="flow-step">
+                <div class="step-title">Testing Steps:</div>
+                <div class="step-description">
+                    1. Click "Go Directly to Login" button above<br>
+                    2. Enter any valid email (e.g., test@example.com)<br>
+                    3. Open browser console (F12) to see the generated OTP<br>
+                    4. Copy the 6-digit OTP from console<br>
+                    5. Paste or type the OTP in the verification screen<br>
+                    6. You'll be redirected to the main page with an active session<br>
+                    7. See your avatar in the top-right navbar<br>
+                    8. Click avatar to logout
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ Production Note:</strong>
+                This is a demo implementation. In production, implement:
+                • Backend OTP generation and validation
+                • Email service integration (SendGrid, AWS SES)
+                • Secure httpOnly cookies instead of localStorage
+                • Rate limiting and CAPTCHA
+                • Database for session management
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <div class="section-title">📁 Files Created</div>
+            <div class="code-block">
+login.html           - Login & OTP verification UI
+auth.js              - Authentication logic
+auth-styles.css      - Authentication styling
+session-manager.js   - Cross-page session management
+AUTH-README.md       - Complete documentation
+test-auth.html       - This demo page
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <p style="color: #b0b8c1; margin-bottom: 16px;">
+                <strong style="color: #d4af37;">Brownie Challenge-1</strong> - Session-Based Authentication + Email OTP Verification
+            </p>
+            <p style="color: #6c757d; font-size: 14px;">
+                Implemented for Voyager Travel Website • Time: 6 PM
+            </p>
+        </div>
+    </div>
+</body>
+</html>

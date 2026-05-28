@@ -1,0 +1,131 @@
+═══════════════════════════════════════════════════════════════
+   📦 HOW TO INSTALL NODE.JS & RUN YOUR SERVER
+═══════════════════════════════════════════════════════════════
+
+✅ YOUR API KEY IS ALREADY CONFIGURED!
+   You just need Node.js to run the server.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: INSTALL NODE.JS (3 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The download page should be opening now: https://nodejs.org/
+
+1. Click the GREEN button: "Download Node.js (LTS)"
+   (LTS = Long Term Support - recommended version)
+
+2. Wait for download to complete (node-vXX.XX.X-x64.msi)
+
+3. Run the installer:
+   - Click "Next"
+   - Accept license agreement → "Next"
+   - Keep default installation folder → "Next"
+   - Keep default features → "Next"
+   - Click "Install"
+   - Click "Yes" if Windows asks for permission
+   - Wait for installation (~2 minutes)
+   - Click "Finish"
+
+4. ✅ Node.js is now installed!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: INSTALL DEPENDENCIES (30 seconds)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open Command Prompt (or PowerShell):
+   - Press Windows + R
+   - Type: cmd
+   - Press Enter
+
+2. Navigate to your project folder:
+   cd C:\Users\vvsk\travel-destinations
+
+3. Install dependencies:
+   npm install
+
+   (Wait ~30 seconds for packages to install)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3: START THE SERVER (5 seconds)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In the same Command Prompt:
+
+   npm start
+
+You should see:
+   ╔════════════════════════════════════════════════════════╗
+   ║     🚀 VOYAGER AUTHENTICATION SERVER                   ║
+   ╠════════════════════════════════════════════════════════╣
+   ║  Server: http://localhost:3000                         ║
+   ║  Email Provider: Brevo API (300 emails/day FREE)       ║
+   ║  Status: ✅ Ready to send OTPs                         ║
+   ╚════════════════════════════════════════════════════════╝
+
+✅ Server is running! Keep this window open.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 4: TEST WITH REAL EMAILS! 🎉
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open your browser: http://localhost:3000
+
+2. Click "Start Exploring" → Login
+
+3. Enter YOUR REAL EMAIL ADDRESS
+   (Gmail, Yahoo, Outlook, any email!)
+
+4. Click "Continue"
+
+5. CHECK YOUR EMAIL INBOX
+   - Subject: "Your Voyager Login OTP"
+   - From: Voyager Travel
+   - Contains: 6-digit OTP code
+
+6. Enter the OTP from email
+
+7. ✅ SUCCESS! You're logged in!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 TIPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Check spam folder if email doesn't arrive in 10 seconds
+✅ Keep Command Prompt window open while testing
+✅ Press Ctrl+C in Command Prompt to stop server
+✅ Run "npm start" again to restart server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🆘 TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problem: "npm is not recognized"
+Solution: You need to open a NEW Command Prompt after installing Node.js
+
+Problem: Email not arriving
+Solution: Check spam folder, wait 30 seconds, verify email address
+
+Problem: Port 3000 already in use
+Solution: Close other programs using port 3000, or change PORT in server.js
+
+Problem: Server won't start
+Solution: Make sure you're in travel-destinations folder
+         Run: npm install again
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 WHAT YOU'LL HAVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Professional OTP authentication system
+✅ Real emails sent from Voyager Travel
+✅ Beautiful HTML email templates
+✅ 300 free emails per day (Brevo)
+✅ Session management with countdown timer
+✅ Secure and production-ready code
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Total setup time: ~5 minutes
+Result: Full email OTP authentication! 🎉
+
+═══════════════════════════════════════════════════════════════

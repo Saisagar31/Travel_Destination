@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flights - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="pages-styles.css">
+    <style>
+        .page-hero {
+            min-height: 50vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+        }
+
+        .flight-search-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            padding: 3rem;
+            max-width: 1000px;
+            margin: -100px auto 4rem;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .flight-search-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .flight-tab {
+            background: transparent;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .flight-tab.active {
+            color: var(--primary-gold);
+            border-bottom-color: var(--primary-gold);
+        }
+
+        .search-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .flight-deals {
+            padding: 4rem 0;
+        }
+
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .deal-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .deal-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .deal-content {
+            padding: 1.5rem;
+        }
+
+        .deal-route {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .deal-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .deal-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .price-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+        }
+
+        .price-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .book-flight-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-flight-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="flights.html" class="active">Flights</a></li>
+                <li><a href="bus-travel.html">Bus Travel</a></li>
+                <li><a href="ar-experience.html">AR Experience</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </button>
+                </li>
+                <li id="nav-auth-btn"><a href="http://localhost:3000/login-appwrite.html" class="nav-btn">Login / Sign Up</a></li>
+                <li id="nav-user-menu" class="user-dropdown-wrapper" style="display: none;">
+                    <button class="nav-btn user-profile-btn" onclick="toggleUserMenu(event)" id="nav-user-btn">
+                        <span class="user-avatar-small" id="nav-user-avatar">👤</span>
+                        <span id="nav-user-name">User</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="user-dropdown-menu" id="nav-dropdown">
+                        <a href="http://localhost:3000/profile.html" class="dropdown-menu-item">
+                            <span>👤</span> My Profile
+                        </a>
+                        <a href="#" class="dropdown-menu-item" onclick="logoutUser(event)">
+                            <span>🚪</span> Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Book Your Journey</p>
+            <h1 class="hero-title">Find the Perfect Flight</h1>
+            <p class="hero-description">Compare prices and book flights to your dream destination</p>
+        </div>
+    </section>
+
+    <!-- Flight Search Card -->
+    <div class="container">
+        <div class="flight-search-card">
+            <div class="flight-search-tabs">
+                <button class="flight-tab active" onclick="switchTab('roundtrip')">Round Trip</button>
+                <button class="flight-tab" onclick="switchTab('oneway')">One Way</button>
+                <button class="flight-tab" onclick="switchTab('multi')">Multi-City</button>
+            </div>
+
+            <form class="search-form" onsubmit="searchFlights(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">From</label>
+                        <input type="text" class="form-input" placeholder="Departure City" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">To</label>
+                        <input type="text" class="form-input" placeholder="Destination City" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Departure Date</label>
+                        <input type="date" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Return Date</label>
+                        <input type="date" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Passengers</label>
+                        <select class="form-input" required>
+                            <option value="1">1 Passenger</option>
+                            <option value="2">2 Passengers</option>
+                            <option value="3">3 Passengers</option>
+                            <option value="4">4+ Passengers</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Class</label>
+                        <select class="form-input" required>
+                            <option value="economy">Economy</option>
+                            <option value="premium">Premium Economy</option>
+                            <option value="business">Business</option>
+                            <option value="first">First Class</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="search-btn">🔍 Search Flights</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Flight Deals Section -->
+    <section class="flight-deals">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Special Offers</p>
+                <h2 class="section-title">Featured Flight Deals</h2>
+                <p class="section-description">Limited time offers on popular routes</p>
+            </div>
+
+            <div class="deals-grid">
+                <!-- Deal 1 -->
+                <div class="deal-card">
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&h=400&fit=crop" alt="Flight" class="deal-image">
+                    <div class="deal-content">
+                        <div class="deal-route">New York → Paris</div>
+                        <div class="deal-date">📅 Jan 15 - Jan 22, 2025</div>
+                        <div class="deal-price">
+                            <div>
+                                <div class="price-amount">$450</div>
+                                <div class="price-label">per person</div>
+                            </div>
+                            <button class="book-flight-btn" onclick="bookFlight('New York to Paris')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal 2 -->
+                <div class="deal-card">
+                    <img src="https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800&h=400&fit=crop" alt="Flight" class="deal-image">
+                    <div class="deal-content">
+                        <div class="deal-route">London → Tokyo</div>
+                        <div class="deal-date">📅 Feb 1 - Feb 14, 2025</div>
+                        <div class="deal-price">
+                            <div>
+                                <div class="price-amount">$680</div>
+                                <div class="price-label">per person</div>
+                            </div>
+                            <button class="book-flight-btn" onclick="bookFlight('London to Tokyo')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal 3 -->
+                <div class="deal-card">
+                    <img src="https://images.unsplash.com/photo-1544016768-982d1554f0b9?w=800&h=400&fit=crop" alt="Flight" class="deal-image">
+                    <div class="deal-content">
+                        <div class="deal-route">LA → Bali</div>
+                        <div class="deal-date">📅 Mar 10 - Mar 24, 2025</div>
+                        <div class="deal-price">
+                            <div>
+                                <div class="price-amount">$520</div>
+                                <div class="price-label">per person</div>
+                            </div>
+                            <button class="book-flight-btn" onclick="bookFlight('LA to Bali')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal 4 -->
+                <div class="deal-card">
+                    <img src="https://images.unsplash.com/photo-1569629743817-70d8db6c323b?w=800&h=400&fit=crop" alt="Flight" class="deal-image">
+                    <div class="deal-content">
+                        <div class="deal-route">Miami → Santorini</div>
+                        <div class="deal-date">📅 Apr 5 - Apr 15, 2025</div>
+                        <div class="deal-price">
+                            <div>
+                                <div class="price-amount">$590</div>
+                                <div class="price-label">per person</div>
+                            </div>
+                            <button class="book-flight-btn" onclick="bookFlight('Miami to Santorini')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal 5 -->
+                <div class="deal-card">
+                    <img src="https://images.unsplash.com/photo-1583508915901-b5f84c1dcde1?w=800&h=400&fit=crop" alt="Flight" class="deal-image">
+                    <div class="deal-content">
+                        <div class="deal-route">Chicago → Iceland</div>
+                        <div class="deal-date">📅 May 20 - May 30, 2025</div>
+                        <div class="deal-price">
+                            <div>
+                                <div class="price-amount">$420</div>
+                                <div class="price-label">per person</div>
+                            </div>
+                            <button class="book-flight-btn" onclick="bookFlight('Chicago to Iceland')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal 6 -->
+                <div class="deal-card">
+                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=400&fit=crop" alt="Flight" class="deal-image">
+                    <div class="deal-content">
+                        <div class="deal-route">Sydney → Maldives</div>
+                        <div class="deal-date">📅 Jun 1 - Jun 12, 2025</div>
+                        <div class="deal-price">
+                            <div>
+                                <div class="price-amount">$750</div>
+                                <div class="price-label">per person</div>
+                            </div>
+                            <button class="book-flight-btn" onclick="bookFlight('Sydney to Maldives')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <span>VOYAGER</span>
+                </div>
+                <p class="footer-text">© 2025 Voyager. Crafting extraordinary travel experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@16.0.2"></script>
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        function switchTab(type) {
+            const tabs = document.querySelectorAll('.flight-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function searchFlights(event) {
+            event.preventDefault();
+            alert('🔍 Searching for flights... This feature will connect to flight APIs!');
+        }
+
+        function bookFlight(route) {
+            alert('✈️ Booking flight: ' + route + '\n\nThis will redirect to booking checkout!');
+        }
+    </script>
+
+    <!-- Chaos Mode Script -->
+    <script src="chaos-mode.js"></script>
+</body>
+</html>

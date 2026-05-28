@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "name": "travel-api-proxy",
+  "builds": [
+    {
+      "src": "api-proxy-server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api-proxy-server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

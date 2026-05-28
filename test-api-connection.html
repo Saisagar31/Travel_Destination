@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API Connection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .loading { color: orange; }
+        h1 { color: #333; }
+        h2 { color: #666; margin-top: 0; }
+        pre {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 API Connection Test</h1>
+    
+    <div class="test-box">
+        <h2>1. Currency Conversion (USD → INR)</h2>
+        <div id="currency-test" class="loading">Testing...</div>
+    </div>
+    
+    <div class="test-box">
+        <h2>2. Pexels API (Photos)</h2>
+        <div id="pexels-test" class="loading">Testing...</div>
+    </div>
+    
+    <div class="test-box">
+        <h2>3. OpenTripMap API (Attractions)</h2>
+        <div id="opentripmap-test" class="loading">Testing...</div>
+    </div>
+    
+    <div class="test-box">
+        <h2>4. Destination Data</h2>
+        <div id="data-test" class="loading">Testing...</div>
+    </div>
+
+    <script src="destinations-data.js"></script>
+    <script src="api-services-real.js"></script>
+    <script type="module">
+        import { API_KEYS, BASE_PRICES } from './api-config-real.js';
+        
+        // Test 1: Currency Conversion
+        async function testCurrency() {
+            try {
+                const usd = 1500;
+                const inr = await window.APIServices.convertToINR(usd);
+                const formatted = window.APIServices.formatINR(inr);
+                
+                document.getElementById('currency-test').innerHTML = `
+                    <span class="success">✅ SUCCESS!</span><br>
+                    $${usd} USD = <span class="price">${formatted}</span>
+                `;
+            } catch (error) {
+                document.getElementById('currency-test').innerHTML = `
+                    <span class="error">❌ FAILED: ${error.message}</span>
+                `;
+            }
+        }
+        
+        // Test 2: Pexels API
+        async function testPexels() {
+            try {
+                const photos = await window.APIServices.getPexelsImages('santorini greece', 3, API_KEYS.PEXELS);
+                
+                if (photos && photos.length > 0) {
+                    document.getElementById('pexels-test').innerHTML = `
+                        <span class="success">✅ SUCCESS!</span><br>
+                        Found ${photos.length} photos<br>
+                        <small>First photo by: ${photos[0].photographer}</small>
+                    `;
+                } else {
+                    throw new Error('No photos returned');
+                }
+            } catch (error) {
+                document.getElementById('pexels-test').innerHTML = `
+                    <span class="error">❌ FAILED: ${error.message}</span>
+                `;
+            }
+        }
+        
+        // Test 3: OpenTripMap API
+        async function testOpenTripMap() {
+            try {
+                const attractions = await window.APIServices.getNearbyAttractions(
+                    36.3932, 25.4615, 5000, API_KEYS.OPENTRIPMAP
+                );
+                
+                if (attractions && attractions.length > 0) {
+                    document.getElementById('opentripmap-test').innerHTML = `
+                        <span class="success">✅ SUCCESS!</span><br>
+                        Found ${attractions.length} attractions near Santorini<br>
+                        <small>First: ${attractions[0].name}</small>
+                    `;
+                } else {
+                    document.getElementById('opentripmap-test').innerHTML = `
+                        <span class="success">✅ API works but no attractions found</span><br>
+                        <small>This is normal for some locations</small>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('opentripmap-test').innerHTML = `
+                    <span class="error">❌ FAILED: ${error.message}</span>
+                `;
+            }
+        }
+        
+        // Test 4: Destination Data
+        function testData() {
+            try {
+                if (typeof destinationsData === 'undefined') {
+                    throw new Error('destinationsData not loaded');
+                }
+                
+                const destinations = Object.keys(destinationsData);
+                const prices = Object.keys(BASE_PRICES);
+                
+                document.getElementById('data-test').innerHTML = `
+                    <span class="success">✅ SUCCESS!</span><br>
+                    Destinations loaded: ${destinations.length}<br>
+                    Prices configured: ${prices.length}<br>
+                    <pre>${destinations.join(', ')}</pre>
+                `;
+            } catch (error) {
+                document.getElementById('data-test').innerHTML = `
+                    <span class="error">❌ FAILED: ${error.message}</span>
+                `;
+            }
+        }
+        
+        // Run all tests
+        console.log('Starting API tests...');
+        testData();
+        testCurrency();
+        testPexels();
+        testOpenTripMap();
+    </script>
+</body>
+</html>

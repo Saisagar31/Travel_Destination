@@ -1,0 +1,462 @@
+/* Enhanced Destination Card Styles with API Integration */
+
+/* Price Badge */
+.price-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    z-index: 5;
+    animation: fadeInDown 0.6s ease-out;
+}
+
+.price-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    margin-bottom: 5px;
+}
+
+.price-amount {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 5px 0;
+}
+
+.price-duration {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-top: 5px;
+}
+
+/* Rating and Reviews */
+.destination-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+    padding: 10px;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 8px;
+}
+
+.stars {
+    font-size: 16px;
+}
+
+.rating-text {
+    font-weight: 700;
+    font-size: 18px;
+    color: #667eea;
+}
+
+.reviews-text {
+    color: #666;
+    font-size: 14px;
+}
+
+body.dark-theme .reviews-text {
+    color: #aaa;
+}
+
+/* Weather Widget */
+.weather-widget {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    border-radius: 12px;
+    margin: 15px 0;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.weather-icon img {
+    width: 60px;
+    height: 60px;
+}
+
+.weather-info {
+    flex: 1;
+}
+
+.weather-temp {
+    font-size: 28px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.weather-desc {
+    text-transform: capitalize;
+    color: #666;
+    font-size: 14px;
+}
+
+body.dark-theme .weather-desc {
+    color: #aaa;
+}
+
+.weather-extra {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 13px;
+    color: #666;
+}
+
+body.dark-theme .weather-extra {
+    color: #aaa;
+}
+
+/* Booking Modal */
+.booking-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+}
+
+.booking-modal.show {
+    opacity: 1;
+}
+
+.booking-modal-content {
+    background: white;
+    border-radius: 20px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideInUp 0.4s ease-out;
+}
+
+body.dark-theme .booking-modal-content {
+    background: #2d3748;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.1);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.modal-close:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(90deg);
+}
+
+body.dark-theme .modal-close {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-header {
+    padding: 40px 40px 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+body.dark-theme .modal-header {
+    border-bottom-color: #4a5568;
+}
+
+.modal-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+}
+
+body.dark-theme .modal-header h2 {
+    color: #fff;
+}
+
+.modal-tagline {
+    font-size: 16px;
+    color: #667eea;
+    font-style: italic;
+}
+
+.modal-body {
+    padding: 30px 40px;
+}
+
+.package-details,
+.included-section,
+.activities-section,
+.weather-section,
+.best-time-section {
+    margin-bottom: 30px;
+}
+
+.modal-body h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+body.dark-theme .modal-body h3 {
+    color: #fff;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+body.dark-theme .detail-row {
+    border-bottom-color: #4a5568;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.price-highlight {
+    color: #667eea;
+    font-size: 24px;
+}
+
+.included-list {
+    list-style: none;
+    padding: 0;
+}
+
+.included-list li {
+    padding: 10px;
+    margin-bottom: 8px;
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 8px;
+    color: #333;
+}
+
+body.dark-theme .included-list li {
+    background: rgba(102, 126, 234, 0.1);
+    color: #fff;
+}
+
+.activities-list {
+    display: grid;
+    gap: 12px;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+body.dark-theme .activity-item {
+    background: #374151;
+}
+
+.activity-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+body.dark-theme .activity-item:hover {
+    background: #4a5568;
+}
+
+.activity-price {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 16px;
+}
+
+.modal-weather {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    border-radius: 12px;
+}
+
+.modal-weather img {
+    width: 100px;
+    height: 100px;
+}
+
+.temp-large {
+    font-size: 36px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.best-time-info {
+    padding: 20px;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #ffd700;
+}
+
+.best-time-info strong {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #667eea;
+}
+
+.best-time-info p {
+    color: #666;
+    margin: 0;
+}
+
+body.dark-theme .best-time-info p {
+    color: #aaa;
+}
+
+.modal-footer {
+    padding: 20px 40px 40px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+body.dark-theme .modal-footer {
+    border-top-color: #4a5568;
+}
+
+.total-price {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.total-price span:first-child {
+    font-size: 14px;
+    color: #666;
+}
+
+body.dark-theme .total-price span:first-child {
+    color: #aaa;
+}
+
+.total-amount {
+    font-size: 32px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.btn-book-now {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.btn-book-now:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .price-badge {
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+    }
+    
+    .price-amount {
+        font-size: 18px;
+    }
+    
+    .weather-widget {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .booking-modal-content {
+        margin: 20px;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 20px;
+    }
+    
+    .modal-header h2 {
+        font-size: 24px;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-book-now {
+        width: 100%;
+    }
+}
+
+/* Animation for fade in */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

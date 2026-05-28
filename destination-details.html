@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Details - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="pages-styles.css">
+    <style>
+        .destination-hero {
+            height: 70vh;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 60px 0;
+            margin-top: 60px;
+        }
+
+        .destination-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .destination-details-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 30px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .detail-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .detail-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .weather-card {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .weather-item {
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .weather-item .icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .weather-item .value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-gold);
+        }
+
+        .weather-item .label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .price-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .price-amount {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        .price-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .book-btn {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .attraction-card {
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .attraction-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .attraction-card h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--primary-gold);
+        }
+
+        .attraction-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .attraction-distance {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .gallery-section {
+            margin-top: 40px;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            height: 250px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-credit {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+            font-size: 12px;
+        }
+
+        .highlights-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .highlights-list li {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .highlights-list li::before {
+            content: '✓';
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .info-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .secret-spots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .secret-spot {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .secret-spot .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .secret-spot h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--primary-gold);
+        }
+
+        .secret-spot p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .destination-hero {
+                height: 50vh;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="transportation.html">Transportation</a></li>
+                <li><a href="trip-planner.html">Trip Planner</a></li>
+                <li><a href="ar-experience.html">AR Experience</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </button>
+                </li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Destination Hero -->
+    <div class="destination-hero" id="hero-section">
+        <div class="hero-content">
+            <h1 id="destination-name" style="font-size: 64px; font-family: 'Cormorant Garamond', serif; margin-bottom: 15px;"></h1>
+            <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                <span class="info-badge">📍 <span id="destination-location"></span></span>
+                <span class="info-badge">🏷️ <span id="destination-category"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="destination-details-container">
+        <div class="details-grid">
+            <!-- Left Column -->
+            <div>
+                <!-- Description -->
+                <div class="detail-section">
+                    <h2>About This Destination</h2>
+                    <p id="destination-description" style="line-height: 1.8; color: var(--text-secondary);"></p>
+                </div>
+
+                <!-- Secret Spots -->
+                <div class="detail-section">
+                    <h2>Hidden Gems & Secret Spots</h2>
+                    <div class="secret-spots-grid" id="secret-spots"></div>
+                </div>
+
+                <!-- Highlights -->
+                <div class="detail-section">
+                    <h2>Experience Highlights</h2>
+                    <ul class="highlights-list" id="highlights-list"></ul>
+                </div>
+
+                <!-- Weather -->
+                <div class="detail-section">
+                    <h2>Current Weather</h2>
+                    <div class="weather-card" id="weather-info">
+                        <div style="text-align: center; padding: 20px;">
+                            <div class="loading-spinner"></div>
+                            <p style="margin-top: 15px;">Loading weather data...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nearby Attractions -->
+                <div class="detail-section">
+                    <h2>Nearby Attractions</h2>
+                    <div class="attractions-grid" id="attractions-grid">
+                        <div style="text-align: center; padding: 20px;">
+                            <div class="loading-spinner"></div>
+                            <p style="margin-top: 15px;">Loading attractions...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column (Sidebar) -->
+            <div>
+                <!-- Pricing -->
+                <div class="price-card">
+                    <div class="price-label">Complete Package Starting From</div>
+                    <div class="price-amount" id="package-price">
+                        <div class="loading-spinner" style="border-color: rgba(255,255,255,0.3); border-top-color: white;"></div>
+                    </div>
+                    <p style="font-size: 14px; opacity: 0.9;">Includes accommodation, activities & more</p>
+                    <button class="book-btn" onclick="bookNow()">Book Now</button>
+                    
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.3);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span>Per Night:</span>
+                            <strong id="per-night-price">-</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Activities:</span>
+                            <strong id="activities-price">-</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Best Time to Visit -->
+                <div class="detail-section" style="margin-top: 20px;">
+                    <h2 style="font-size: 24px;">Best Time to Visit</h2>
+                    <div style="background: var(--bg-secondary); padding: 20px; border-radius: 15px; margin-top: 15px;">
+                        <div style="font-size: 24px; color: var(--primary-gold); margin-bottom: 10px;">📅</div>
+                        <div style="font-weight: 600; font-size: 18px; margin-bottom: 8px;" id="best-months"></div>
+                        <p style="font-size: 14px; color: var(--text-secondary);" id="best-reason"></p>
+                    </div>
+                </div>
+
+                <!-- Quick Facts -->
+                <div class="detail-section" style="margin-top: 20px;">
+                    <h2 style="font-size: 24px;">Quick Facts</h2>
+                    <div style="margin-top: 15px;">
+                        <div class="info-badge" style="display: block; margin-bottom: 10px;">
+                            🌡️ <span id="quick-temp">Loading...</span>
+                        </div>
+                        <div class="info-badge" style="display: block; margin-bottom: 10px;">
+                            🕐 Local Time: <span id="local-time">--:--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo Gallery -->
+        <div class="gallery-section">
+            <div class="detail-section">
+                <h2>Photo Gallery</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Explore stunning photos from Pexels</p>
+                <div class="photo-gallery" id="photo-gallery">
+                    <div style="text-align: center; padding: 40px;">
+                        <div class="loading-spinner"></div>
+                        <p style="margin-top: 15px;">Loading beautiful photos...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <span>VOYAGER</span>
+                </div>
+                <p class="footer-text">© 2025 Voyager. Crafting extraordinary travel experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="destinations-data.js"></script>
+    <script type="module">
+        import { API_KEYS, API_ENDPOINTS, DESTINATION_COORDS, BASE_PRICES } from './api-config-real.js';
+
+        // Get destination from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const destinationId = urlParams.get('id') || 'santorini';
+        const destination = destinationsData[destinationId];
+
+        if (!destination) {
+            window.location.href = 'index.html';
+        }
+
+        // Set hero background and basic info
+        document.getElementById('hero-section').style.backgroundImage = `url(${destination.image})`;
+        document.getElementById('destination-name').textContent = destination.name;
+        document.getElementById('destination-location').textContent = destination.location;
+        document.getElementById('destination-category').textContent = destination.category;
+        document.getElementById('destination-description').textContent = destination.description;
+
+        // Render secret spots
+        const secretSpotsHTML = destination.secretSpots.map(spot => `
+            <div class="secret-spot">
+                <div class="icon">${spot.icon}</div>
+                <h4>${spot.name}</h4>
+                <p>${spot.description}</p>
+            </div>
+        `).join('');
+        document.getElementById('secret-spots').innerHTML = secretSpotsHTML;
+
+        // Render highlights
+        const highlightsHTML = destination.highlights.map(highlight => 
+            `<li>${highlight}</li>`
+        ).join('');
+        document.getElementById('highlights-list').innerHTML = highlightsHTML;
+
+        // Load API Services
+        const script = document.createElement('script');
+        script.src = 'api-services-real.js';
+        script.onload = async () => {
+            // Get coordinates
+            const coords = DESTINATION_COORDS[destinationId];
+            const prices = BASE_PRICES[destinationId];
+
+            // Load prices in INR
+            try {
+                const packageINR = await window.APIServices.convertToINR(prices.package);
+                const perNightINR = await window.APIServices.convertToINR(prices.perNight);
+                const activitiesINR = await window.APIServices.convertToINR(prices.activities);
+
+                document.getElementById('package-price').textContent = window.APIServices.formatINR(packageINR);
+                document.getElementById('per-night-price').textContent = window.APIServices.formatINR(perNightINR);
+                document.getElementById('activities-price').textContent = window.APIServices.formatINR(activitiesINR);
+            } catch (error) {
+                console.error('Error loading prices:', error);
+            }
+
+            // Load weather
+            try {
+                const weather = await window.APIServices.getWeatherData(coords.lat, coords.lon, API_KEYS.OPENWEATHER);
+                document.getElementById('weather-info').innerHTML = `
+                    <div class="weather-item">
+                        <div class="icon">🌡️</div>
+                        <div class="value">${weather.temp}°C</div>
+                        <div class="label">Temperature</div>
+                    </div>
+                    <div class="weather-item">
+                        <div class="icon">💧</div>
+                        <div class="value">${weather.humidity}%</div>
+                        <div class="label">Humidity</div>
+                    </div>
+                    <div class="weather-item">
+                        <div class="icon">💨</div>
+                        <div class="value">${weather.wind_speed} km/h</div>
+                        <div class="label">Wind Speed</div>
+                    </div>
+                    <div class="weather-item">
+                        <div class="icon">☁️</div>
+                        <div class="value" style="font-size: 16px; text-transform: capitalize;">${weather.description}</div>
+                        <div class="label">Conditions</div>
+                    </div>
+                `;
+                document.getElementById('quick-temp').textContent = `${weather.temp}°C, ${weather.description}`;
+            } catch (error) {
+                console.error('Error loading weather:', error);
+            }
+
+            // Load attractions from OpenTripMap
+            try {
+                const attractions = await window.APIServices.getNearbyAttractions(coords.lat, coords.lon, 10000, API_KEYS.OPENTRIPMAP);
+                if (attractions && attractions.length > 0) {
+                    document.getElementById('attractions-grid').innerHTML = attractions.map(attr => `
+                        <div class="attraction-card">
+                            <h4>${attr.name}</h4>
+                            <p>${attr.info}</p>
+                            <div class="attraction-distance">
+                                📍 ${(attr.distance / 1000).toFixed(1)} km away
+                                ${attr.rating > 0 ? `<span style="color: #FFD700;">★ ${attr.rating}/7</span>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    document.getElementById('attractions-grid').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No nearby attractions found</p>';
+                }
+            } catch (error) {
+                console.error('Error loading attractions:', error);
+                document.getElementById('attractions-grid').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Unable to load attractions</p>';
+            }
+
+            // Load photos from Pexels
+            try {
+                const photos = await window.APIServices.getPexelsImages(`${destination.name} ${destination.location}`, 9, API_KEYS.PEXELS);
+                document.getElementById('photo-gallery').innerHTML = photos.map(photo => `
+                    <div class="gallery-item">
+                        <img src="${photo.thumb}" alt="${photo.alt}" loading="lazy">
+                        <div class="gallery-credit">
+                            Photo by ${photo.photographer} on ${photo.source || 'Pexels'}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading photos:', error);
+            }
+
+            // Best time to visit
+            const bestTime = window.APIServices.getBestTimeToVisit(destinationId);
+            document.getElementById('best-months').textContent = bestTime.months;
+            document.getElementById('best-reason').textContent = bestTime.reason;
+
+            // Update local time every second
+            setInterval(() => {
+                try {
+                    const timeZones = {
+                        santorini: 'Europe/Athens',
+                        bali: 'Asia/Makassar',
+                        iceland: 'Atlantic/Reykjavik',
+                        tokyo: 'Asia/Tokyo',
+                        maldives: 'Indian/Maldives',
+                        machupicchu: 'America/Lima'
+                    };
+                    const localTime = new Date().toLocaleString('en-US', { 
+                        timeZone: timeZones[destinationId],
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                    document.getElementById('local-time').textContent = localTime;
+                } catch (error) {
+                    console.error('Error updating time:', error);
+                }
+            }, 1000);
+        };
+        document.head.appendChild(script);
+
+        // Book now function
+        window.bookNow = function() {
+            alert(`Booking for ${destination.name}! This will connect to your booking system.`);
+            // Here you can redirect to booking page or open a modal
+        };
+
+        // Theme toggle
+        window.toggleTheme = function() {
+            document.body.classList.toggle('dark-mode');
+        };
+
+        // Mobile menu
+        window.toggleMobileMenu = function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        };
+    </script>
+</body>
+</html>

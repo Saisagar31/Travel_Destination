@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voyager - Luxury Travel Experiences</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <style>
+        /* Trip Planner Section */
+        .trip-planner-section {
+            padding: 4rem 0;
+            background: var(--bg-primary);
+        }
+
+        .trip-search-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .trip-search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .trip-search-input {
+            flex: 1;
+            padding: 1.2rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 1.1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .trip-search-input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .trip-search-btn {
+            padding: 1.2rem 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .trip-search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .trip-quick-searches {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .trip-quick-btn {
+            padding: 0.6rem 1.2rem;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trip-quick-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .home-trip-results {
+            margin-top: 3rem;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .trip-results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .trip-results-header h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .view-full-btn {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .view-full-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .trip-photos-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .trip-photo-card {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .trip-photo-card:hover {
+            transform: scale(1.05);
+        }
+
+        .trip-photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .trip-attractions-preview h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .home-attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .home-attraction-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .home-attraction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .home-attraction-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .home-attraction-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .home-attraction-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="transportation.html">Transportation</a></li>
+                <li><a href="trip-planner.html">Trip Planner</a></li>
+                <li><a href="ar-experience.html">AR Experience</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </button>
+                </li>
+                <li id="nav-auth-btn"><a href="http://localhost:3000/login-appwrite.html" class="nav-btn">Login / Sign Up</a></li>
+                <li id="nav-user-menu" class="user-dropdown-wrapper" style="display: none;">
+                    <button class="nav-btn user-profile-btn" onclick="toggleUserMenu(event)" id="nav-user-btn">
+                        <span class="user-avatar-small" id="nav-user-avatar">👤</span>
+                        <span id="nav-user-name">User</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="user-dropdown-menu" id="nav-dropdown">
+                        <a href="http://localhost:3000/profile.html" class="dropdown-menu-item">
+                            <span>👤</span> My Profile
+                        </a>
+                        <a href="#" class="dropdown-menu-item" onclick="logoutUser(event)">
+                            <span>🚪</span> Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Discover the World</p>
+            <h1 class="hero-title">Extraordinary Journeys Await</h1>
+            <p class="hero-description">Curated luxury travel experiences to the world's most stunning destinations</p>
+            <a href="#destinations" class="hero-btn">Explore Destinations</a>
+        </div>
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Destinations Grid -->
+    <section id="destinations" class="destinations">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Our Collection</p>
+                <h2 class="section-title">Featured Destinations</h2>
+                <p class="section-description">
+                    Handpicked locations offering unparalleled beauty and unforgettable experiences
+                </p>
+            </div>
+
+            <!-- Filter Tabs with Glassmorphism -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all" onclick="filterDestinations('all')">
+                    <span class="tab-icon">🌍</span>
+                    <span class="tab-text">All Destinations</span>
+                </button>
+                <button class="filter-tab" data-filter="Beach" onclick="filterDestinations('Beach')">
+                    <span class="tab-icon">🏖️</span>
+                    <span class="tab-text">Beach</span>
+                </button>
+                <button class="filter-tab" data-filter="Adventure" onclick="filterDestinations('Adventure')">
+                    <span class="tab-icon">🏄</span>
+                    <span class="tab-text">Adventure</span>
+                </button>
+                <button class="filter-tab" data-filter="Nature" onclick="filterDestinations('Nature')">
+                    <span class="tab-icon">🏔️</span>
+                    <span class="tab-text">Nature</span>
+                </button>
+                <button class="filter-tab" data-filter="Urban" onclick="filterDestinations('Urban')">
+                    <span class="tab-icon">🌆</span>
+                    <span class="tab-text">Urban</span>
+                </button>
+                <button class="filter-tab" data-filter="Luxury" onclick="filterDestinations('Luxury')">
+                    <span class="tab-icon">💎</span>
+                    <span class="tab-text">Luxury</span>
+                </button>
+                <button class="filter-tab" data-filter="Historic" onclick="filterDestinations('Historic')">
+                    <span class="tab-icon">🏛️</span>
+                    <span class="tab-text">Historic</span>
+                </button>
+            </div>
+            
+            <div class="destinations-grid">
+                
+                <!-- Santorini -->
+                <article class="destination-card" data-destination="santorini" data-category="Beach">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&h=600&fit=crop" 
+                             alt="Santorini Greece" 
+                             class="card-image"
+                             loading="lazy">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Santorini</h3>
+                            <span class="card-location">Greece</span>
+                        </div>
+                        <p class="card-description">
+                            Iconic whitewashed villages perched on volcanic cliffs overlooking the azure Aegean Sea
+                        </p>
+                        <button class="secret-spots-btn" onclick="toggleSecretSpots(event, 'santorini')">
+                            <span class="secret-icon">🗺️</span>
+                            <span>Secret Spots</span>
+                        </button>
+                        <div class="secret-spots-list" id="spots-santorini"></div>
+                        <div class="card-footer">
+                            <button class="book-now-btn" onclick="handleBooking('Santorini')">Book Now</button>
+                            <span class="card-link">Learn More →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Bali -->
+                <article class="destination-card" data-destination="bali" data-category="Adventure">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&h=600&fit=crop" 
+                             alt="Bali Indonesia" 
+                             class="card-image"
+                             loading="lazy">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Bali</h3>
+                            <span class="card-location">Indonesia</span>
+                        </div>
+                        <p class="card-description">
+                            Lush rice terraces, ancient temples, and pristine beaches create a tropical paradise
+                        </p>
+                        <button class="secret-spots-btn" onclick="toggleSecretSpots(event, 'bali')">
+                            <span class="secret-icon">�
+
+️</span>
+                            <span>Secret Spots</span>
+                        </button>
+                        <div class="secret-spots-list" id="spots-bali"></div>
+                        <div class="card-footer">
+                            <button class="book-now-btn" onclick="handleBooking('Bali')">Book Now</button>
+                            <span class="card-link">Learn More →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Iceland -->
+                <article class="destination-card" data-destination="iceland" data-category="Nature">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=800&h=600&fit=crop" 
+                             alt="Iceland" 
+                             class="card-image"
+                             loading="lazy">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Iceland</h3>
+                            <span class="card-location">Nordic Europe</span>
+                        </div>
+                        <p class="card-description">
+                            Witness the mesmerizing Northern Lights dance across glaciers and volcanic landscapes
+                        </p>
+                        <button class="secret-spots-btn" onclick="toggleSecretSpots(event, 'iceland')">
+                            <span class="secret-icon">🗺️</span>
+                            <span>Secret Spots</span>
+                        </button>
+                        <div class="secret-spots-list" id="spots-iceland"></div>
+                        <div class="card-footer">
+                            <button class="book-now-btn" onclick="handleBooking('Iceland')">Book Now</button>
+                            <span class="card-link">Learn More →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Tokyo -->
+                <article class="destination-card" data-destination="tokyo" data-category="Urban">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&h=600&fit=crop" 
+                             alt="Tokyo Japan" 
+                             class="card-image"
+                             loading="lazy">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Tokyo</h3>
+                            <span class="card-location">Japan</span>
+                        </div>
+                        <p class="card-description">
+                            Where ancient traditions harmonize with cutting-edge innovation in a vibrant metropolis
+                        </p>
+                        <button class="secret-spots-btn" onclick="toggleSecretSpots(event, 'tokyo')">
+                            <span class="secret-icon">🗺️</span>
+                            <span>Secret Spots</span>
+                        </button>
+                        <div class="secret-spots-list" id="spots-tokyo"></div>
+                        <div class="card-footer">
+                            <button class="book-now-btn" onclick="handleBooking('Tokyo')">Book Now</button>
+                            <span class="card-link">Learn More →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Maldives -->
+                <article class="destination-card" data-destination="maldives" data-category="Luxury">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&h=600&fit=crop" 
+                             alt="Maldives" 
+                             class="card-image"
+                             loading="lazy">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Maldives</h3>
+                            <span class="card-location">Indian Ocean</span>
+                        </div>
+                        <p class="card-description">
+                            Luxurious overwater villas surrounded by crystal-clear turquoise waters
+                        </p>
+                        <button class="secret-spots-btn" onclick="toggleSecretSpots(event, 'maldives')">
+                            <span class="secret-icon">🗺️</span>
+                            <span>Secret Spots</span>
+                        </button>
+                        <div class="secret-spots-list" id="spots-maldives"></div>
+                        <div class="card-footer">
+                            <button class="book-now-btn" onclick="handleBooking('Maldives')">Book Now</button>
+                            <span class="card-link">Learn More →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Machu Picchu -->
+                <article class="destination-card" data-destination="machupicchu" data-category="Historic">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=800&h=600&fit=crop" 
+                             alt="Machu Picchu Peru" 
+                             class="card-image"
+                             loading="lazy">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Machu Picchu</h3>
+                            <span class="card-location">Peru</span>
+                        </div>
+                        <p class="card-description">
+                            Ancient Incan citadel nestled high in the mystical Andes Mountains
+                        </p>
+                        <button class="secret-spots-btn" onclick="toggleSecretSpots(event, 'machupicchu')">
+                            <span class="secret-icon">🗺️</span>
+                            <span>Secret Spots</span>
+                        </button>
+                        <div class="secret-spots-list" id="spots-machupicchu"></div>
+                        <div class="card-footer">
+                            <button class="book-now-btn" onclick="handleBooking('Machu Picchu')">Book Now</button>
+                            <span class="card-link">Learn More →</span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Trip Planner Section -->
+    <section id="trip-planner" class="trip-planner-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Plan Your Journey</p>
+                <h2 class="section-title">Trip Planner</h2>
+                <p class="section-description">Search any location and discover stunning photos and attractions</p>
+            </div>
+
+            <!-- Search Box -->
+            <div class="trip-search-container">
+                <div class="trip-search-box">
+                    <input 
+                        type="text" 
+                        class="trip-search-input" 
+                        id="home-location-search"
+                        placeholder="Search for a destination... (e.g., Paris, Tokyo, Bali)">
+                    <button class="trip-search-btn" onclick="searchFromHome()">
+                        🔍 Search
+                    </button>
+                </div>
+                <div class="trip-quick-searches">
+                    <button class="trip-quick-btn" onclick="quickSearchHome('Paris')">🗼 Paris</button>
+                    <button class="trip-quick-btn" onclick="quickSearchHome('Tokyo')">🗾 Tokyo</button>
+                    <button class="trip-quick-btn" onclick="quickSearchHome('New York')">🗽 New York</button>
+                    <button class="trip-quick-btn" onclick="quickSearchHome('Bali')">🏝️ Bali</button>
+                    <button class="trip-quick-btn" onclick="quickSearchHome('Dubai')">🏙️ Dubai</button>
+                </div>
+            </div>
+
+            <!-- Results Preview -->
+            <div id="home-trip-results" class="home-trip-results" style="display: none;">
+                <div class="trip-results-header">
+                    <h3 id="results-location-name">Paris</h3>
+                    <a href="trip-planner.html" class="view-full-btn">View Full Details →</a>
+                </div>
+                
+                <div class="trip-photos-preview" id="home-photos-grid"></div>
+                
+                <div class="trip-attractions-preview">
+                    <h4>Top Attractions</h4>
+                    <div id="home-attractions-grid"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destination Detail Modal -->
+    <div class="modal" id="destination-modal">
+        <div class="modal-overlay" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <div class="modal-image-section">
+                    <img id="modal-image" src="" alt="" class="modal-image">
+                </div>
+                <div class="modal-info-section">
+                    <div class="modal-header">
+                        <p class="modal-location" id="modal-location"></p>
+                        <h2 class="modal-title" id="modal-title"></h2>
+                    </div>
+                    <div class="modal-description" id="modal-description"></div>
+                    <div class="modal-highlights">
+                        <h4>Experience Highlights</h4>
+                        <ul id="modal-highlights"></ul>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn-primary">Plan Your Journey</button>
+                        <button class="btn-secondary" onclick="closeModal()">Continue Exploring</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <span>VOYAGER</span>
+                </div>
+                <p class="footer-text">© 2025 Voyager. Crafting extraordinary travel experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="session-manager.js"></script>
+    <script src="destinations-data.js"></script>
+    <script src="destinations-data-enhanced.js"></script>
+    <script src="api-services-real.js"></script>
+    <script src="enhanced-card-renderer.js"></script>
+    <script src="script.js"></script>
+    <script src="api-services-proxy.js"></script>
+    <script>
+        // Trip Planner on Home Page
+        async function searchFromHome() {
+            const searchInput = document.getElementById('home-location-search');
+            const query = searchInput.value.trim();
+            
+            if (!query) {
+                alert('Please enter a location to search!');
+                return;
+            }
+            
+            await displayHomeResults(query);
+        }
+
+        async function quickSearchHome(location) {
+            document.getElementById('home-location-search').value = location;
+            await displayHomeResults(location);
+        }
+
+        async function displayHomeResults(location) {
+            const resultsSection = document.getElementById('home-trip-results');
+            const locationName = document.getElementById('results-location-name');
+            const photosGrid = document.getElementById('home-photos-grid');
+            const attractionsGrid = document.getElementById('home-attractions-grid');
+            
+            // Show loading
+            locationName.textContent = `Searching ${location}...`;
+            resultsSection.style.display = 'block';
+            photosGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-secondary);">Loading images...</div>';
+            
+            // Get photos from Unsplash API
+            const samplePhotos = await getUnsplashPhotos(location);
+            
+            // Get attractions
+            const attractions = getAttractions(location);
+            
+            // Display location name
+            locationName.textContent = capitalize(location);
+            
+            // Display photos (limited to 6 for home page)
+            photosGrid.innerHTML = samplePhotos.slice(0, 6).map(photo => `
+                <div class="trip-photo-card">
+                    <img src="${photo.url}" alt="${photo.alt || location}" loading="lazy">
+                    <div style="font-size: 0.7rem; padding: 0.5rem; color: var(--text-secondary);">
+                        Photo by ${photo.photographer}
+                    </div>
+                </div>
+            `).join('');
+            
+            // Display attractions (limited to 3 for home page)
+            attractionsGrid.innerHTML = attractions.slice(0, 3).map(attr => `
+                <div class="home-attraction-card">
+                    <div class="home-attraction-name">${attr.name}</div>
+                    <span class="home-attraction-type">${attr.type}</span>
+                    <p class="home-attraction-info">${attr.info}</p>
+                </div>
+            `).join('');
+            
+            // Scroll to results
+            setTimeout(() => {
+                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+
+        // Fetch real photos from Unsplash API
+        async function getUnsplashPhotos(location) {
+            try {
+                // Enhanced search query with location-specific terms
+                const searchQuery = `${location} landmark tourist attraction`;
+                const response = await fetch(`http://localhost:3001/api/images?q=${encodeURIComponent(searchQuery)}&per_page=6&orientation=landscape`);
+                
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+                
+                const data = await response.json();
+                console.log('Unsplash API response:', data);
+                
+                if (data.photos && data.photos.length > 0) {
+                    return data.photos.map(img => ({
+                        url: img.url || img.src.large,
+                        thumb: img.src.small,
+                        alt: img.alt || `${location} view`,
+                        photographer: img.photographer,
+                        photographer_url: img.photographer_url
+                    }));
+                }
+                
+                // Fallback to source API if no results
+                console.warn('No photos found, using fallback');
+                return getFallbackPhotos(location);
+            } catch (error) {
+                console.error('Error fetching Unsplash photos:', error);
+                return getFallbackPhotos(location);
+            }
+        }
+
+        // Fallback function for when API fails
+        function getFallbackPhotos(location) {
+            const sanitizedLocation = encodeURIComponent(location.toLowerCase().trim());
+            const categories = ['landmark', 'city', 'architecture', 'tourist', 'aerial', 'street'];
+            
+            return categories.map((category, i) => ({
+                url: `https://source.unsplash.com/800x600/?${sanitizedLocation},${category},${i}`,
+                thumb: `https://source.unsplash.com/400x300/?${sanitizedLocation},${category},${i}`,
+                alt: `${location} ${category}`,
+                photographer: 'Unsplash',
+                photographer_url: 'https://unsplash.com'
+            }));
+        }
+
+        // Handle Enter key in search
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('home-location-search');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        searchFromHome();
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- Appwrite SDK & Auth Protection -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@16.0.2"></script>
+    <style>
+        .book-now-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .book-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* User Dropdown Menu */
+        .user-dropdown-wrapper {
+            position: relative;
+        }
+        
+        .user-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+        }
+        
+        .user-avatar-small {
+            font-size: 1.2rem;
+        }
+        
+        .dropdown-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .user-profile-btn.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        body.dark-theme .user-dropdown-menu {
+            background: #2d3748;
+        }
+        
+        .user-dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        
+        body.dark-theme .dropdown-menu-item {
+            color: #fff;
+        }
+        
+        .dropdown-menu-item:hover {
+            background: #f7fafc;
+        }
+        
+        body.dark-theme .dropdown-menu-item:hover {
+            background: #4a5568;
+        }
+        
+        .dropdown-menu-item span {
+            font-size: 1.2rem;
+        }
+    </style>
+    <script>
+        // Initialize Appwrite
+        const client = new Appwrite.Client();
+        client
+            .setEndpoint('https://cloud.appwrite.io/v1')
+            .setProject('693c23c300185b1d3ab6');
+        
+        const account = new Appwrite.Account(client);
+        let currentUser = null;
+
+        // Check authentication state
+        async function checkAuthState() {
+            try {
+                currentUser = await account.get();
+                // User is logged in - show profile in nav
+                document.getElementById('nav-auth-btn').style.display = 'none';
+                document.getElementById('nav-user-menu').style.display = 'block';
+                
+                const userName = currentUser.name || currentUser.email.split('@')[0];
+                document.getElementById('nav-user-name').textContent = userName;
+                
+                // Set avatar (first letter)
+                const firstLetter = currentUser.email.charAt(0).toUpperCase();
+                document.getElementById('nav-user-avatar').textContent = firstLetter;
+            } catch (error) {
+                // User is not logged in
+                currentUser = null;
+                document.getElementById('nav-auth-btn').style.display = 'block';
+                document.getElementById('nav-user-menu').style.display = 'none';
+            }
+        }
+        
+        // Toggle user dropdown menu
+        function toggleUserMenu(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('nav-dropdown');
+            const btn = document.getElementById('nav-user-btn');
+            dropdown.classList.toggle('show');
+            btn.classList.toggle('active');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('nav-dropdown');
+            const wrapper = document.getElementById('nav-user-menu');
+            if (dropdown && wrapper && !wrapper.contains(e.target)) {
+                dropdown.classList.remove('show');
+                document.getElementById('nav-user-btn').classList.remove('active');
+            }
+        });
+        
+        // Logout user
+        async function logoutUser(event) {
+            event.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                try {
+                    await account.deleteSession('current');
+                    alert('✅ Logged out successfully!\n\nYou are now viewing as a guest.');
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    alert('Error logging out. Please try again.');
+                }
+            }
+        }
+
+        // Handle booking - require login
+        function handleBooking(destination) {
+            if (!currentUser) {
+                // User not logged in - show alert and redirect
+                alert('Please login to book a trip to ' + destination + '!');
+                window.location.href = 'http://localhost:3000/login-appwrite.html';
+            } else {
+                // User is logged in - show enhanced booking modal
+                const destinationKey = destination.toLowerCase().replace(/\s+/g, '');
+                if (typeof EnhancedCards !== 'undefined') {
+                    EnhancedCards.showBookingModal(destinationKey);
+                } else {
+                    alert('🎉 Booking ' + destination + '!\n\nWelcome ' + (currentUser.name || currentUser.email) + '!');
+                }
+            }
+        }
+
+        // Check auth on page load
+        checkAuthState();
+    </script>
+
+    <!-- Chaos Mode Script -->
+    <script src="chaos-mode.js"></script>
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Planner - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="pages-styles.css">
+    <style>
+        /* Glassmorphism Autocomplete */
+        .autocomplete-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .autocomplete-dropdown {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-height: 480px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .autocomplete-dropdown.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .autocomplete-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .autocomplete-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .autocomplete-item:hover,
+        .autocomplete-item.selected {
+            background: #f5f5f5;
+        }
+
+        .autocomplete-icon {
+            width: 32px;
+            height: 32px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .autocomplete-text {
+            flex: 1;
+        }
+
+        .autocomplete-name {
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 2px;
+            font-size: 14px;
+        }
+
+        .autocomplete-detail {
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .search-icon-prefix {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #5f6368;
+            font-size: 20px;
+            pointer-events: none;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            font-size: 16px;
+            background: white;
+            color: #202124;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:hover {
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+            border-color: rgba(223,225,229,0);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+            border-color: rgba(223,225,229,0);
+            background: white;
+        }
+
+        body[data-theme="dark"] .autocomplete-dropdown {
+            background: #2d2d2d;
+            border: 1px solid #444;
+        }
+
+        body[data-theme="dark"] .search-input {
+            background: #3c3c3c;
+            border-color: #5f6368;
+            color: #e8eaed;
+        }
+
+        body[data-theme="dark"] .search-input:hover,
+        body[data-theme="dark"] .search-input:focus {
+            background: #3c3c3c;
+            box-shadow: 0 1px 6px rgba(255,255,255,.1);
+        }
+
+        body[data-theme="dark"] .autocomplete-item {
+            border-bottom-color: #444;
+        }
+
+        body[data-theme="dark"] .autocomplete-item:hover,
+        body[data-theme="dark"] .autocomplete-item.selected {
+            background: #3c3c3c;
+        }
+
+        body[data-theme="dark"] .autocomplete-name {
+            color: #e8eaed;
+        }
+
+        body[data-theme="dark"] .autocomplete-detail {
+            color: #9aa0a6;
+        }
+
+        body[data-theme="dark"] .autocomplete-icon {
+            background: #444;
+        }
+
+        /* Loading spinner */
+        .autocomplete-loading {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Results with glassmorphism */
+        .results-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="dark"] .results-card {
+            background: rgba(30, 30, 40, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .gallery-image {
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="transportation.html">Transportation</a></li>
+                <li><a href="trip-planner-improved.html" class="active">Trip Planner</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Plan Your Journey</p>
+            <h1 class="hero-title">Trip Planner</h1>
+            <p class="hero-description">Discover destinations with intelligent search</p>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" style="margin: -100px auto 4rem; max-width: 900px; position: relative; z-index: 10;">
+        <div class="search-container" style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px) saturate(180%); border-radius: 24px; padding: 2.5rem; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);">
+            <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center;">Search Destinations</h2>
+            
+            <div class="search-box" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                <div class="autocomplete-wrapper">
+                    <span class="search-icon-prefix">🔍</span>
+                    <input 
+                        type="text" 
+                        id="destination-search" 
+                        class="search-input" 
+                        placeholder="Search destinations..."
+                        autocomplete="off"
+                    >
+                    <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+                </div>
+                <button class="search-button" onclick="searchDestination()">
+                    Search
+                </button>
+            </div>
+
+            <div class="quick-searches" style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
+                <button class="quick-search-btn" onclick="quickSearch('Paris')" style="padding: 0.5rem 1.2rem; background: rgba(102, 126, 234, 0.1); color: #667eea; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 20px; cursor: pointer;">🗼 Paris</button>
+                <button class="quick-search-btn" onclick="quickSearch('Tokyo')">🗾 Tokyo</button>
+                <button class="quick-search-btn" onclick="quickSearch('Bali')">🏝️ Bali</button>
+                <button class="quick-search-btn" onclick="quickSearch('Dubai')">🏜️ Dubai</button>
+                <button class="quick-search-btn" onclick="quickSearch('Santorini')">🏖️ Santorini</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section" id="results-section" style="display: none; padding: 2rem 5%; max-width: 1400px; margin: 0 auto;">
+        <div class="results-card">
+            <h3 id="results-title" style="font-size: 1.8rem; margin-bottom: 1rem;">📍 <span id="destination-name">Destination</span></h3>
+            <div id="photos-section">
+                <h4 style="font-size: 1.3rem; margin-bottom: 1rem;">📸 Photos</h4>
+                <div id="photos-grid" class="image-gallery"></div>
+            </div>
+            <div id="attractions-section" style="margin-top: 3rem;">
+                <h4 style="font-size: 1.3rem; margin-bottom: 1rem;">🏛️ Top Attractions</h4>
+                <div id="attractions-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <span>VOYAGER</span>
+                </div>
+                <p class="footer-text">© 2025 Voyager. Crafting extraordinary travel experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="api-services-proxy.js"></script>
+    <script src="script.js"></script>
+    <script src="pages-common.js"></script>
+    <script>
+        // Popular destinations database
+        const destinations = [
+            { name: 'Paris', country: 'France', emoji: '🗼', lat: 48.8566, lon: 2.3522, keywords: ['eiffel tower', 'france', 'europe', 'romantic'] },
+            { name: 'Tokyo', country: 'Japan', emoji: '🗾', lat: 35.6762, lon: 139.6503, keywords: ['japan', 'asia', 'sushi', 'anime'] },
+            { name: 'Bali', country: 'Indonesia', emoji: '🏝️', lat: -8.4095, lon: 115.1889, keywords: ['beach', 'indonesia', 'tropical', 'island'] },
+            { name: 'Dubai', country: 'UAE', emoji: '🏜️', lat: 25.2048, lon: 55.2708, keywords: ['burj khalifa', 'luxury', 'desert', 'uae'] },
+            { name: 'Santorini', country: 'Greece', emoji: '🏖️', lat: 36.3932, lon: 25.4615, keywords: ['greece', 'island', 'sunset', 'white buildings'] },
+            { name: 'New York', country: 'USA', emoji: '🗽', lat: 40.7128, lon: -74.0060, keywords: ['usa', 'city', 'statue of liberty', 'manhattan'] },
+            { name: 'London', country: 'UK', emoji: '🏰', lat: 51.5074, lon: -0.1278, keywords: ['uk', 'england', 'big ben', 'royal'] },
+            { name: 'Rome', country: 'Italy', emoji: '🏛️', lat: 41.9028, lon: 12.4964, keywords: ['italy', 'colosseum', 'history', 'pizza'] },
+            { name: 'Barcelona', country: 'Spain', emoji: '🏖️', lat: 41.3851, lon: 2.1734, keywords: ['spain', 'gaudi', 'beach', 'sagrada familia'] },
+            { name: 'Istanbul', country: 'Turkey', emoji: '🕌', lat: 41.0082, lon: 28.9784, keywords: ['turkey', 'mosque', 'bosphorus', 'bazaar'] },
+            { name: 'Sydney', country: 'Australia', emoji: '🏄', lat: -33.8688, lon: 151.2093, keywords: ['australia', 'opera house', 'beach', 'koala'] },
+            { name: 'Maldives', country: 'Maldives', emoji: '🏝️', lat: 3.2028, lon: 73.2207, keywords: ['island', 'beach', 'luxury', 'resort'] },
+            { name: 'Iceland', country: 'Iceland', emoji: '🏔️', lat: 64.9631, lon: -19.0208, keywords: ['northern lights', 'nature', 'volcano', 'glacier'] },
+            { name: 'Machu Picchu', country: 'Peru', emoji: '⛰️', lat: -13.1631, lon: -72.5450, keywords: ['peru', 'inca', 'ruins', 'mountain'] },
+        ];
+
+        let selectedIndex = -1;
+        let filteredResults = [];
+
+        // Autocomplete functionality
+        const searchInput = document.getElementById('destination-search');
+        const dropdown = document.getElementById('autocomplete-dropdown');
+
+        searchInput.addEventListener('input', handleInput);
+        searchInput.addEventListener('keydown', handleKeyboard);
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.autocomplete-wrapper')) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        function handleInput(e) {
+            const query = e.target.value.trim().toLowerCase();
+            
+            if (query.length < 2) {
+                dropdown.classList.remove('active');
+                return;
+            }
+
+            // Filter destinations
+            filteredResults = destinations.filter(dest => 
+                dest.name.toLowerCase().includes(query) ||
+                dest.country.toLowerCase().includes(query) ||
+                dest.keywords.some(keyword => keyword.includes(query))
+            );
+
+            if (filteredResults.length === 0) {
+                dropdown.innerHTML = '<div class="autocomplete-loading">No destinations found</div>';
+                dropdown.classList.add('active');
+                return;
+            }
+
+            // Render results
+            dropdown.innerHTML = filteredResults.map((dest, index) => `
+                <div class="autocomplete-item" data-index="${index}" onclick="selectDestination(${index})">
+                    <div class="autocomplete-icon">${dest.emoji}</div>
+                    <div class="autocomplete-text">
+                        <div class="autocomplete-name">${dest.name}</div>
+                        <div class="autocomplete-detail">${dest.country}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            dropdown.classList.add('active');
+            selectedIndex = -1;
+        }
+
+        function handleKeyboard(e) {
+            const items = dropdown.querySelectorAll('.autocomplete-item');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateSelection(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, -1);
+                updateSelection(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (selectedIndex >= 0) {
+                    selectDestination(selectedIndex);
+                } else {
+                    searchDestination();
+                }
+            } else if (e.key === 'Escape') {
+                dropdown.classList.remove('active');
+            }
+        }
+
+        function updateSelection(items) {
+            items.forEach((item, index) => {
+                item.classList.toggle('selected', index === selectedIndex);
+                if (index === selectedIndex) {
+                    item.scrollIntoView({ block: 'nearest' });
+                }
+            });
+        }
+
+        function selectDestination(index) {
+            const dest = filteredResults[index];
+            searchInput.value = dest.name;
+            dropdown.classList.remove('active');
+            searchDestination();
+        }
+
+        function quickSearch(destination) {
+            searchInput.value = destination;
+            searchDestination();
+        }
+        
+        // Travel plan/itinerary functions
+        let travelPlan = [];
+        
+        function addToItinerary(placeName, destination) {
+            const item = {
+                id: Date.now(),
+                place: placeName,
+                destination: destination,
+                addedAt: new Date().toLocaleTimeString()
+            };
+            
+            travelPlan.push(item);
+            updateItineraryDisplay();
+            
+            // Show success message
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Added!';
+            btn.style.background = '#4CAF50';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            }, 1500);
+        }
+        
+        function removeFromItinerary(id) {
+            travelPlan = travelPlan.filter(item => item.id !== id);
+            updateItineraryDisplay();
+        }
+        
+        function clearItinerary() {
+            travelPlan = [];
+            updateItineraryDisplay();
+        }
+        
+        function updateItineraryDisplay() {
+            const planSection = document.getElementById('travel-plan-section');
+            const itineraryList = document.getElementById('itinerary-list');
+            
+            if (travelPlan.length === 0) {
+                planSection.style.display = 'none';
+                return;
+            }
+            
+            planSection.style.display = 'block';
+            
+            itineraryList.innerHTML = travelPlan.map((item, index) => `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: white; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <div style="flex: 1;">
+                        <span style="font-weight: 600; color: #667eea; margin-right: 0.5rem;">Day ${index + 1}:</span>
+                        <span style="color: #333;">${item.place}</span>
+                        <span style="color: #999; font-size: 0.85rem; margin-left: 0.5rem;">(Added at ${item.addedAt})</span>
+                    </div>
+                    <button onclick="removeFromItinerary(${item.id})" 
+                            style="padding: 0.4rem 0.8rem; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">
+                        Remove
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function searchDestination() {
+            const query = searchInput.value.trim();
+            if (!query) return;
+
+            // Find destination in database (fuzzy match)
+            let dest = destinations.find(d => 
+                d.name.toLowerCase() === query.toLowerCase()
+            );
+            
+            // If not exact match, try partial match
+            if (!dest) {
+                dest = destinations.find(d => 
+                    d.name.toLowerCase().includes(query.toLowerCase()) ||
+                    query.toLowerCase().includes(d.name.toLowerCase())
+                );
+            }
+            
+            // Fallback with no coordinates
+            if (!dest) {
+                dest = { name: query, lat: null, lon: null };
+            }
+
+            const resultsSection = document.getElementById('results-section');
+            const destinationName = document.getElementById('destination-name');
+            const photosGrid = document.getElementById('photos-grid');
+            const attractionsGrid = document.getElementById('attractions-grid');
+
+            destinationName.textContent = dest.name;
+            resultsSection.style.display = 'block';
+            
+            // Show loading
+            photosGrid.innerHTML = '<div class="autocomplete-loading"><div class="spinner"></div> Loading photos...</div>';
+            attractionsGrid.innerHTML = '<div class="autocomplete-loading"><div class="spinner"></div> Loading attractions...</div>';
+
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+
+            try {
+                // Fetch photos
+                console.log(`Fetching images for: ${dest.name}`);
+                const images = await APIServicesProxy.getPexelsImages(`${dest.name} travel`, 12);
+                
+                console.log(`Received ${images.length} images:`, images);
+                
+                if (images.length > 0) {
+                    photosGrid.innerHTML = images.map((img, index) => {
+                        console.log(`Image ${index + 1} URL:`, img.url);
+                        return `
+                        <div class="gallery-image">
+                            <img src="${img.url}" 
+                                 alt="${img.alt || dest.name}" 
+                                 loading="lazy"
+                                 crossorigin="anonymous"
+                                 onerror="console.error('Failed to load:', this.src); this.onerror=null; this.style.background='#fee'; this.alt='Image failed to load';"
+                                 onload="console.log('Loaded successfully:', this.src);"
+                                 style="background: #f0f0f0; min-height: 200px;">
+                        </div>
+                    `;
+                    }).join('');
+                } else {
+                    console.warn('No images returned from API');
+                    photosGrid.innerHTML = '<p style="color: #999; padding: 20px; text-align: center;">No photos available for this destination</p>';
+                }
+
+                // Fetch attractions if coordinates available
+                if (dest.lat && dest.lon) {
+                    const attractions = await APIServicesProxy.getNearbyAttractions(dest.lat, dest.lon, 5000);
+                    
+                    if (attractions.length > 0) {
+                        attractionsGrid.innerHTML = `
+                            <div style="display: grid; gap: 1.5rem;">
+                                ${attractions.map((place, index) => `
+                                    <div class="results-card" style="margin-bottom: 0; padding: 1.5rem; border-left: 4px solid #667eea;">
+                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                            <div>
+                                                <h5 style="font-weight: 600; font-size: 1.2rem; margin-bottom: 0.3rem; color: #667eea;">
+                                                    ${index + 1}. ${place.name}
+                                                </h5>
+                                                <p style="color: #999; font-size: 0.85rem;">
+                                                    📍 ${(place.distance / 1000).toFixed(1)}km away • ⭐ ${place.rating}/7
+                                                </p>
+                                            </div>
+                                            <button onclick="addToItinerary('${place.name.replace(/'/g, "\\'")}', '${dest.name}')" 
+                                                    style="padding: 0.5rem 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; cursor: pointer; white-space: nowrap;">
+                                                + Add to Plan
+                                            </button>
+                                        </div>
+                                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+                                            ${place.info || 'Interesting place to visit'}
+                                        </p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <!-- Travel Plan Section -->
+                            <div id="travel-plan-section" style="margin-top: 3rem; padding: 2rem; background: rgba(102, 126, 234, 0.05); border-radius: 16px; border: 2px dashed #667eea; display: none;">
+                                <h4 style="font-size: 1.3rem; margin-bottom: 1rem; color: #667eea;">
+                                    🗺️ Your Travel Plan for ${dest.name}
+                                </h4>
+                                <div id="itinerary-list" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+                                <button onclick="clearItinerary()" style="margin-top: 1rem; padding: 0.7rem 1.5rem; background: #f44336; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                    Clear Plan
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        attractionsGrid.innerHTML = '<p style="color: #999; padding: 20px; text-align: center;">No attractions found nearby</p>';
+                    }
+                } else {
+                    attractionsGrid.innerHTML = `
+                        <div style="padding: 2rem; text-align: center; background: rgba(255, 152, 0, 0.1); border-radius: 12px; border: 2px dashed #FF9800;">
+                            <p style="color: #F57C00; font-size: 1.1rem; margin-bottom: 0.5rem;">⚠️ No coordinates available</p>
+                            <p style="color: #666; font-size: 0.9rem;">Try searching for: Paris, Tokyo, Bali, Dubai, Santorini, New York, London, Rome, Barcelona, or Istanbul</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching destination data:', error);
+                photosGrid.innerHTML = '<p>Error loading photos</p>';
+                attractionsGrid.innerHTML = '<p>Error loading attractions</p>';
+            }
+        }
+    </script>
+</body>
+</html>

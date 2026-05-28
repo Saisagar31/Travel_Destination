@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Travel - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="pages-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="flights.html">Flights</a></li>
+                <li><a href="bus-travel.html" class="active">Bus Travel</a></li>
+                <li><a href="ar-experience.html">AR Experience</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </button>
+                </li>
+                <li id="nav-auth-btn"><a href="http://localhost:3000/login-appwrite.html" class="nav-btn">Login / Sign Up</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Comfortable Journeys</p>
+            <h1 class="hero-title">Bus Travel</h1>
+            <p class="hero-description">Affordable and scenic routes across popular destinations</p>
+        </div>
+    </section>
+
+    <!-- Bus Search Section -->
+    <div class="container">
+        <div class="bus-search-card">
+            <h2 class="search-title">Find Your Bus</h2>
+            <form class="bus-search-form" onsubmit="searchBuses(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">From</label>
+                        <input type="text" class="form-input" placeholder="Departure City" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">To</label>
+                        <input type="text" class="form-input" placeholder="Destination City" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" required>
+                    </div>
+                </div>
+                <button type="submit" class="search-btn">🔍 Search Buses</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Popular Routes -->
+    <section class="bus-routes-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Popular Routes</p>
+                <h2 class="section-title">Featured Bus Routes</h2>
+                <p class="section-description">Comfortable and affordable bus travel options</p>
+            </div>
+
+            <div class="routes-grid" id="routes-grid">
+                <!-- Routes will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <span>VOYAGER</span>
+                </div>
+                <p class="footer-text">© 2025 Voyager. Crafting extraordinary travel experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@16.0.2"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+    
+    <style>
+        .bus-search-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            padding: 3rem;
+            max-width: 1000px;
+            margin: -100px auto 4rem;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .bus-search-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .bus-routes-section {
+            padding: 4rem 0;
+        }
+
+        .routes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .route-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .route-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .route-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        .route-city {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .route-arrow {
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+        }
+
+        .route-details {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .route-features {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-badge {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .route-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .price-amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+        }
+
+        .book-bus-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-bus-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+
+    <script>
+        // Bus routes data
+        const busRoutes = [
+            {
+                from: 'Tokyo',
+                to: 'Kyoto',
+                duration: '2h 30m',
+                departure: '08:00 AM',
+                arrival: '10:30 AM',
+                price: 45,
+                operator: 'JR Highway Bus',
+                features: ['WiFi', 'AC', 'USB Charging', 'Reclining Seats']
+            },
+            {
+                from: 'Paris',
+                to: 'London',
+                duration: '7h 15m',
+                departure: '10:00 AM',
+                arrival: '05:15 PM',
+                price: 65,
+                operator: 'FlixBus',
+                features: ['WiFi', 'Toilet', 'Snacks', 'Entertainment']
+            },
+            {
+                from: 'Barcelona',
+                to: 'Madrid',
+                duration: '7h 30m',
+                departure: '09:00 AM',
+                arrival: '04:30 PM',
+                price: 38,
+                operator: 'ALSA',
+                features: ['WiFi', 'AC', 'Movies', 'USB Charging']
+            },
+            {
+                from: 'New York',
+                to: 'Boston',
+                duration: '4h 30m',
+                departure: '07:00 AM',
+                arrival: '11:30 AM',
+                price: 25,
+                operator: 'Greyhound',
+                features: ['WiFi', 'Power Outlets', 'Reclining Seats']
+            },
+            {
+                from: 'Bangkok',
+                to: 'Phuket',
+                duration: '12h',
+                departure: '06:00 PM',
+                arrival: '06:00 AM',
+                price: 35,
+                operator: 'Transport Co.',
+                features: ['Sleeper', 'AC', 'Toilet', 'Blanket']
+            },
+            {
+                from: 'Berlin',
+                to: 'Prague',
+                duration: '4h 45m',
+                departure: '08:30 AM',
+                arrival: '01:15 PM',
+                price: 28,
+                operator: 'FlixBus',
+                features: ['WiFi', 'USB', 'Snacks', 'AC']
+            }
+        ];
+
+        // Load bus routes
+        function loadBusRoutes() {
+            const grid = document.getElementById('routes-grid');
+            
+            grid.innerHTML = busRoutes.map(route => `
+                <div class="route-card" onclick="bookBusRoute('${route.from}', '${route.to}')">
+                    <div class="route-header">
+                        <div class="route-city">${route.from}</div>
+                        <div class="route-arrow">→</div>
+                        <div class="route-city">${route.to}</div>
+                    </div>
+                    
+                    <div class="route-details">
+                        <div class="detail-row">
+                            <span class="detail-label">🚌 Operator</span>
+                            <span class="detail-value">${route.operator}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">⏱️ Duration</span>
+                            <span class="detail-value">${route.duration}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">🕐 Departure</span>
+                            <span class="detail-value">${route.departure}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">🕐 Arrival</span>
+                            <span class="detail-value">${route.arrival}</span>
+                        </div>
+                    </div>
+
+                    <div class="route-features">
+                        ${route.features.map(feature => `
+                            <span class="feature-badge">${feature}</span>
+                        `).join('')}
+                    </div>
+
+                    <div class="route-price">
+                        <div class="price-amount">$${route.price}</div>
+                        <button class="book-bus-btn" onclick="event.stopPropagation(); bookBusRoute('${route.from}', '${route.to}')">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function searchBuses(event) {
+            event.preventDefault();
+            alert('🔍 Searching for buses...\n\nThis will connect to bus booking APIs like Rome2rio or RedBus!');
+        }
+
+        function bookBusRoute(from, to) {
+            alert(`🚌 Booking bus from ${from} to ${to}\n\nRedirecting to booking page...`);
+        }
+
+        // Load routes on page load
+        document.addEventListener('DOMContentLoaded', loadBusRoutes);
+    </script>
+
+    <!-- Chaos Mode Script -->
+    <script src="chaos-mode.js"></script>
+</body>
+</html>

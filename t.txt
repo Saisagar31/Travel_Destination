@@ -1,0 +1,4 @@
+in gallery add some images of famous places and when you like press any location in trip planner when the images   │
+│ load we need to get an option to save it in the gallery so that you can view it anytime and the images and in the    │
+│ trip planner when we press a press a place the places near the place iamges are not loading correctly it may be an   │
+│ internet issue but if you have a fix than fix it█

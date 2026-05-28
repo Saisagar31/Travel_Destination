@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="pages-styles.css">
+    <style>
+        .page-hero {
+            min-height: 50vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+        }
+
+        .gallery-section {
+            padding: 4rem 0;
+        }
+
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-filter-btn {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 2px solid var(--border-color);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .gallery-filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .gallery-filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            cursor: pointer;
+            aspect-ratio: 1;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--border-color);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 2rem 1.5rem 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-location {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="transportation.html">Transportation</a></li>
+                <li><a href="trip-planner.html">Trip Planner</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="ar-experience.html">AR Experience</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </button>
+                </li>
+                <li id="nav-auth-btn"><a href="http://localhost:3000/login-appwrite.html" class="nav-btn">Login / Sign Up</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Visual Journey</p>
+            <h1 class="hero-title">Travel Gallery</h1>
+            <p class="hero-description">Stunning moments captured from around the world</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-filters">
+                <button class="gallery-filter-btn active" onclick="filterGallery('all')">All</button>
+                <button class="gallery-filter-btn" onclick="filterGallery('beaches')">Beaches</button>
+                <button class="gallery-filter-btn" onclick="filterGallery('mountains')">Mountains</button>
+                <button class="gallery-filter-btn" onclick="filterGallery('cities')">Cities</button>
+                <button class="gallery-filter-btn" onclick="filterGallery('nature')">Nature</button>
+            </div>
+
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Gallery items will be dynamically loaded -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-image" id="lightbox-image">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <span>VOYAGER</span>
+                </div>
+                <p class="footer-text">© 2025 Voyager. Crafting extraordinary travel experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Gallery data
+        const galleryData = [
+            { id: 1, category: 'beaches', title: 'Santorini Sunset', location: 'Greece', image: 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&h=800&fit=crop' },
+            { id: 2, category: 'cities', title: 'Tokyo Nights', location: 'Japan', image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&h=800&fit=crop' },
+            { id: 3, category: 'nature', title: 'Iceland Aurora', location: 'Iceland', image: 'https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=800&h=800&fit=crop' },
+            { id: 4, category: 'beaches', title: 'Maldives Paradise', location: 'Maldives', image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&h=800&fit=crop' },
+            { id: 5, category: 'mountains', title: 'Machu Picchu', location: 'Peru', image: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=800&h=800&fit=crop' },
+            { id: 6, category: 'nature', title: 'Bali Rice Terraces', location: 'Indonesia', image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&h=800&fit=crop' },
+            { id: 7, category: 'beaches', title: 'Tropical Beach', location: 'Thailand', image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=800&fit=crop' },
+            { id: 8, category: 'cities', title: 'Paris at Night', location: 'France', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&h=800&fit=crop' },
+            { id: 9, category: 'mountains', title: 'Swiss Alps', location: 'Switzerland', image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&h=800&fit=crop' },
+        ];
+
+        let currentFilter = 'all';
+
+        // Load gallery items
+        function loadGallery() {
+            const grid = document.getElementById('gallery-grid');
+            const filtered = currentFilter === 'all' ? galleryData : galleryData.filter(item => item.category === currentFilter);
+            
+            grid.innerHTML = filtered.map(item => `
+                <div class="gallery-item" onclick="openLightbox('${item.image}')">
+                    <img src="${item.image}" alt="${item.title}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-title">${item.title}</div>
+                        <div class="gallery-location">📍 ${item.location}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterGallery(category) {
+            currentFilter = category;
+            document.querySelectorAll('.gallery-filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadGallery();
+        }
+
+        function openLightbox(imageSrc) {
+            document.getElementById('lightbox').classList.add('active');
+            document.getElementById('lightbox-image').src = imageSrc;
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // Initialize gallery
+        loadGallery();
+    </script>
+
+    <!-- Chaos Mode Script -->
+    <script src="chaos-mode.js"></script>
+</body>
+</html>

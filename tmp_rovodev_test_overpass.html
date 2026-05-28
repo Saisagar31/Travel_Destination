@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Overpass API</title>
+</head>
+<body>
+    <h1>Testing Overpass API for Real Attractions</h1>
+    <button onclick="testAPI()">Test Tokyo Attractions</button>
+    <div id="results" style="white-space: pre-wrap; margin-top: 20px;"></div>
+    
+    <script>
+        async function testAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = 'Testing...\n';
+            
+            // Tokyo coordinates
+            const lat = 35.6762;
+            const lon = 139.6503;
+            
+            const radius = 5000; // 5km
+            const overpassQuery = `
+                [out:json][timeout:25];
+                (
+                    node["tourism"~"museum|attraction|viewpoint|gallery|artwork|theme_park|zoo"](around:${radius},${lat},${lon});
+                    node["historic"~"monument|castle|ruins|memorial|archaeological_site"](around:${radius},${lat},${lon});
+                    node["amenity"="place_of_worship"](around:${radius},${lat},${lon});
+                    way["tourism"~"museum|attraction|viewpoint|gallery|theme_park|zoo"](around:${radius},${lat},${lon});
+                    way["historic"~"monument|castle|ruins|memorial"](around:${radius},${lat},${lon});
+                    way["leisure"~"park|garden"](around:${radius},${lat},${lon});
+                );
+                out center 30;
+            `;
+            
+            results.innerHTML += 'Sending query to Overpass API...\n';
+            
+            try {
+                const overpassUrl = 'https://overpass-api.de/api/interpreter';
+                const response = await fetch(overpassUrl, {
+                    method: 'POST',
+                    body: 'data=' + encodeURIComponent(overpassQuery),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+                
+                results.innerHTML += `Response Status: ${response.status}\n\n`;
+                
+                if (!response.ok) {
+                    results.innerHTML += `ERROR: ${response.statusText}\n`;
+                    return;
+                }
+                
+                const data = await response.json();
+                results.innerHTML += `SUCCESS! Found ${data.elements.length} places\n\n`;
+                results.innerHTML += 'Places with names:\n';
+                
+                const named = data.elements.filter(e => e.tags && e.tags.name);
+                named.forEach((place, i) => {
+                    results.innerHTML += `${i+1}. ${place.tags.name} - ${place.tags.tourism || place.tags.historic || place.tags.amenity}\n`;
+                });
+                
+                results.innerHTML += `\n\nFull JSON:\n${JSON.stringify(data, null, 2)}`;
+                
+            } catch (error) {
+                results.innerHTML += `ERROR: ${error.message}\n`;
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>

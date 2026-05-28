@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinations - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="pages-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="destinations.html" class="active">Destinations</a></li>
+                <li><a href="transportation.html">Transportation</a></li>
+                <li><a href="trip-planner.html">Trip Planner</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="ar-experience.html">AR Experience</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </button>
+                </li>
+                <li id="nav-auth-btn"><a href="http://localhost:3000/login-appwrite.html" class="nav-btn">Login / Sign Up</a></li>
+                <li id="nav-user-menu" class="user-dropdown-wrapper" style="display: none;">
+                    <button class="nav-btn user-profile-btn" onclick="toggleUserMenu(event)" id="nav-user-btn">
+                        <span class="user-avatar-small" id="nav-user-avatar">👤</span>
+                        <span id="nav-user-name">User</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="user-dropdown-menu" id="nav-dropdown">
+                        <a href="http://localhost:3000/profile.html" class="dropdown-menu-item">
+                            <span>👤</span> My Profile
+                        </a>
+                        <a href="#" class="dropdown-menu-item" onclick="logoutUser(event)">
+                            <span>🚪</span> Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Explore the World</p>
+            <h1 class="hero-title">Our Destinations</h1>
+            <p class="hero-description">Handpicked luxury travel experiences across the globe</p>
+        </div>
+    </section>
+
+    <!-- Destinations Grid -->
+    <section class="destinations">
+        <div class="container">
+            <!-- Filter Tabs with Glassmorphism -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all" onclick="filterDestinations('all')">
+                    <span class="tab-icon">🌍</span>
+                    <span class="tab-text">All Destinations</span>
+                </button>
+                <button class="filter-tab" data-filter="Beach" onclick="filterDestinations('Beach')">
+                    <span class="tab-icon">🏖️</span>
+                    <span class="tab-text">Beach</span>
+                </button>
+                <button class="filter-tab" data-filter="Adventure" onclick="filterDestinations('Adventure')">
+                    <span class="tab-icon">🏄</span>
+                    <span class="tab-text">Adventure</span>
+                </button>
+                <button class="filter-tab" data-filter="Nature" onclick="filterDestinations('Nature')">
+                    <span class="tab-icon">🏔️</span>
+                    <span class="tab-text">Nature</span>
+                </button>
+                <button class="filter-tab" data-filter="Urban" onclick="filterDestinations('Urban')">
+                    <span class="tab-icon">🌆</span>
+                    <span class="tab-text">Urban</span>
+                </button>
+                <button class="filter-tab" data-filter="Luxury" onclick="filterDestinations('Luxury')">
+                    <span class="tab-icon">💎</span>
+                    <span class="tab-text">Luxury</span>
+                </button>
+                <button class="filter-tab" data-filter="Historic" onclick="filterDestinations('Historic')">
+                    <span class="tab-icon">🏛️</span>
+                    <span class="tab-text">Historic</span>
+                </button>
+            </div>
+            
+            <div class="destinations-grid" id="destinations-grid">
+                <!-- Destinations will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <span>VOYAGER</span>
+                </div>
+                <p class="footer-text">© 2025 Voyager. Crafting extraordinary travel experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@16.0.2"></script>
+    <script src="auth.js"></script>
+    <script src="destinations-data.js"></script>
+    <script src="api-services-proxy.js"></script>
+    <script src="enhanced-card-renderer-inr.js"></script>
+    <script src="script.js"></script>
+    <script src="pages-common.js"></script>
+    <style>
+        .page-hero {
+            min-height: 50vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+        }
+
+        /* Glassmorphism for destination cards */
+        .destination-card {
+            background: rgba(255, 255, 255, 0.7) !important;
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            border-radius: 20px !important;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+            transition: all 0.4s ease !important;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        body[data-theme="dark"] .destination-card {
+            background: rgba(30, 30, 40, 0.7) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Fix overlay to cover entire card */
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.8) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .destination-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .destination-card:hover .card-image {
+            transform: scale(1.1);
+        }
+
+        .book-now-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .book-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-links a.active {
+            color: var(--primary-gold);
+        }
+
+        /* Glassmorphism for filter tabs */
+        .filter-tabs {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px) saturate(180%);
+            -webkit-backdrop-filter: blur(10px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 8px;
+            display: inline-flex;
+            gap: 8px;
+            margin-bottom: 3rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="dark"] .filter-tabs {
+            background: rgba(40, 40, 50, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-tab {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .filter-tab:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .destinations {
+            padding: 3rem 5%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+
+    <!-- Chaos Mode Script -->
+    <script src="chaos-mode.js"></script>
+</body>
+</html>

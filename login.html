@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Voyager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="auth-styles.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <div class="auth-card">
+            <!-- Logo -->
+            <div class="auth-logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span class="logo-text">VOYAGER</span>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-content" id="login-form">
+                <h1 class="auth-title">Welcome Back</h1>
+
+                <form onsubmit="handleLogin(event)" class="form">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                class="form-input" 
+                                placeholder="you@example.com"
+                                required
+                                autocomplete="email"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-message" id="login-message"></div>
+
+                    <button type="submit" class="btn-primary btn-full" id="login-btn">
+                        <span class="btn-text">Continue</span>
+                        <span class="btn-loader"></span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- OTP Verification Form -->
+            <div class="auth-content hidden" id="otp-form">
+                <button class="back-btn" onclick="backToLogin()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+
+                <h1 class="auth-title">Verify Your Email</h1>
+                <p class="auth-subtitle">Enter the 6-digit code sent to <span id="user-email" class="highlight-email"></span></p>
+
+                <form onsubmit="handleOTPVerification(event)" class="form">
+                    <div class="otp-input-group">
+                        <input type="text" maxlength="1" class="otp-input" data-index="0" autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-input" data-index="1" autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-input" data-index="2" autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-input" data-index="3" autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-input" data-index="4" autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-input" data-index="5" autocomplete="off">
+                    </div>
+
+                    <div class="form-message" id="otp-message"></div>
+
+                    <button type="submit" class="btn-primary btn-full" id="verify-btn">
+                        <span class="btn-text">Verify & Continue</span>
+                        <span class="btn-loader"></span>
+                    </button>
+                </form>
+
+                <div class="resend-section">
+                    <p>Didn't receive the code?</p>
+                    <button class="resend-btn" onclick="resendOTP()" id="resend-btn">
+                        <span>Resend Code</span>
+                        <span class="resend-timer" id="resend-timer"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Success State -->
+            <div class="auth-content hidden" id="success-state">
+                <div class="success-animation">
+                    <svg class="checkmark" viewBox="0 0 52 52">
+                        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                </div>
+                <h1 class="auth-title">Welcome!</h1>
+                <p class="redirect-message">Redirecting...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
