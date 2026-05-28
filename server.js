@@ -18,8 +18,7 @@ const otpStore = new Map();
 
 // ⚡ BREVO API CONFIGURATION
 // Get your API key from: https://app.brevo.com/settings/keys/api
-const BREVO_API_KEY = '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';
-const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
+
 
 // Generate random 6-digit OTP
 function generateOTP() {
